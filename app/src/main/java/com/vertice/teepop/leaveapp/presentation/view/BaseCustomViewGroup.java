@@ -1,4 +1,4 @@
-package com.vertice.teepop.leaveapp.util.view;
+package com.vertice.teepop.leaveapp.presentation.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.widget.FrameLayout;
 
-import com.vertice.teepop.leaveapp.util.view.state.BundleSavedState;
+import com.vertice.teepop.leaveapp.presentation.view.state.BundleSavedState;
 
 /**
  * Created by nuuneoi on 1/9/2016.

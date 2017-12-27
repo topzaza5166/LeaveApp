@@ -21,6 +21,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    androidExtensions {
+        experimental = true
+    }
 }
 kapt {
     generateStubs = true
@@ -45,8 +48,6 @@ dependencies {
     //dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    //paging
-    implementation 'android.arch.paging:runtime:1.0.0-alpha4-1'
     //life data
     implementation "android.arch.lifecycle:extensions:$architectureComponentsVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$architectureComponentsVersion"
@@ -57,8 +58,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-
+    //rx android
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
+    //hawk shared preference encrypt
     implementation 'com.orhanobut:hawk:2.0.1'
+
 }

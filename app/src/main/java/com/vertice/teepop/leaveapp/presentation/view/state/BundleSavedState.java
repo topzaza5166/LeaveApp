@@ -1,4 +1,4 @@
-package com.vertice.teepop.leaveapp.util.view.state;
+package com.vertice.teepop.leaveapp.presentation.view.state;
 
 import android.os.Bundle;
 import android.os.Parcel;

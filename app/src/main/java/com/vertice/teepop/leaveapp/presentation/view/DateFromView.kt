@@ -1,13 +1,13 @@
-package com.vertice.teepop.leaveapp.util.view
+package com.vertice.teepop.leaveapp.presentation.view
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import com.vertice.teepop.leaveapp.R
-import com.vertice.teepop.leaveapp.util.view.state.BundleSavedState
+import com.vertice.teepop.leaveapp.presentation.view.state.BundleSavedState
 import kotlinx.android.synthetic.main.view_date_form.view.*
+import java.util.*
 
 
 /**
@@ -44,7 +44,13 @@ class DateFromView : BaseCustomViewGroup {
     }
 
     private fun initInstances() {
-        // findViewById here
+        // findViewById hereval c = Calendar.getInstance()
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        setDate(year, month, day)
     }
 
     private fun initWithAttrs(attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) {
@@ -83,4 +89,11 @@ class DateFromView : BaseCustomViewGroup {
     fun setTextFormTo(text: String) {
         textFromTo.text = text
     }
+
+    fun setDate(year: Int, month: Int, day: Int) {
+        textDate.text = day.toString()
+        textMonth.text = month.toString()
+        textYear.text = year.toString()
+    }
+
 }

@@ -1,12 +1,12 @@
-package com.vertice.teepop.leaveapp.util.view
+package com.vertice.teepop.leaveapp.util.template
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import com.vertice.teepop.leaveapp.R
-import com.vertice.teepop.leaveapp.util.view.state.BundleSavedState
+import com.vertice.teepop.leaveapp.presentation.view.BaseCustomViewGroup
+import com.vertice.teepop.leaveapp.presentation.view.state.BundleSavedState
 
 
 /**

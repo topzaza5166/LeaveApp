@@ -24,7 +24,6 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(loginActivity: LoginActivity)
-    fun inject(leaveActivity: LeaveActivity)
-
+//    fun inject(leaveActivity: LeaveActivity)
     fun inject(leaveViewModel: LeaveViewModel)
 }

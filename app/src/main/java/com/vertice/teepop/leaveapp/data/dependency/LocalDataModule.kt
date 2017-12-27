@@ -3,6 +3,7 @@ package com.vertice.teepop.leaveapp.data.dependency
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.vertice.teepop.leaveapp.data.local.AppDatabase
+import com.vertice.teepop.leaveapp.data.local.LeaveDao
 import com.vertice.teepop.leaveapp.data.local.TypeLeaveDao
 import dagger.Module
 import dagger.Provides
@@ -21,12 +22,18 @@ class LocalDataModule(val context: Context) {
     @Singleton
     fun provideAppDatabase(): AppDatabase =
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DB_FILE_NAME)
+                    .fallbackToDestructiveMigration()
                     .build()
 
     @Provides
     @Singleton
     fun provideTypeLeaveDao(db: AppDatabase): TypeLeaveDao =
             db.typeLeaveDao()
+
+    @Provides
+    @Singleton
+    fun provideLeaveDao(db: AppDatabase): LeaveDao =
+            db.leaveDao()
 
 
 }

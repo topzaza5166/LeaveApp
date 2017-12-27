@@ -2,6 +2,7 @@ package com.vertice.teepop.leaveapp.data.dependency
 
 import com.vertice.teepop.leaveapp.data.LeaveRepository
 import com.vertice.teepop.leaveapp.data.LeaveRepositoryImpl
+import com.vertice.teepop.leaveapp.data.local.LeaveDao
 import com.vertice.teepop.leaveapp.data.local.TypeLeaveDao
 import com.vertice.teepop.leaveapp.data.remote.LeaveApi
 import dagger.Module
@@ -17,6 +18,6 @@ class LeaveRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLeaveRepository(typeLeaveDao: TypeLeaveDao, leaveApi: LeaveApi): LeaveRepository
-            = LeaveRepositoryImpl(leaveApi, typeLeaveDao, Schedulers.io())
+    fun provideLeaveRepository(leaveDao: LeaveDao, typeLeaveDao: TypeLeaveDao, leaveApi: LeaveApi): LeaveRepository
+            = LeaveRepositoryImpl(leaveApi, typeLeaveDao, leaveDao, Schedulers.io())
 }
