@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.vertice.teepop.leaveapp.data.entity.Leave
+import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 
 /**
  * Created by VerDev06 on 12/27/2017.
@@ -21,4 +22,8 @@ interface LeaveDao {
 
     @Query("SELECT * FROM Leave WHERE userId LIKE :arg0")
     fun getLeaveByUserId(userId: Int): LiveData<List<Leave>>
+
+    @Query("SELECT * FROM Leave" +
+            "INNER JOIN Type_Leave ON Leave.typeId = Type_Leave.id")
+    fun getLeaveAndType(): LiveData<List<LeaveAndType>>
 }

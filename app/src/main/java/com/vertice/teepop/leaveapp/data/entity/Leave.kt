@@ -1,9 +1,6 @@
 package com.vertice.teepop.leaveapp.data.entity
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.arch.persistence.room.TypeConverters
+import android.arch.persistence.room.*
 import com.google.gson.annotations.SerializedName
 import com.vertice.teepop.leaveapp.data.entity.converter.DateConverter
 import java.util.*
@@ -11,7 +8,12 @@ import java.util.*
 /**
  * Created by VerDev06 on 12/27/2017.
  */
-@Entity(tableName = "Leave")
+@Entity(tableName = "Leave",
+        foreignKeys = arrayOf(ForeignKey(
+                entity = TypeLeave::class,
+                parentColumns = arrayOf("id"),
+                childColumns = arrayOf("typeId")
+        )))
 class Leave {
 
     @PrimaryKey
