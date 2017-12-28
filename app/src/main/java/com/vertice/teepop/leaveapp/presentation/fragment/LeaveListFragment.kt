@@ -3,6 +3,7 @@ package com.vertice.teepop.leaveapp.presentation.fragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -13,6 +14,8 @@ import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.presentation.adapter.LeaveAdapter
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_USER_ID
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter
 import kotlinx.android.synthetic.main.fragment_leave_list.*
 
 /**
@@ -67,8 +70,16 @@ class LeaveListFragment : Fragment() {
         val mLayoutManager = LinearLayoutManager(context)
         leaveRecyclerView.apply {
             layoutManager = mLayoutManager
-            adapter = leaveAdapter
+            adapter = AlphaInAnimationAdapter(leaveAdapter)
+
 //            addItemDecoration(DividerItemDecoration(context, mLayoutManager.orientation))
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            leaveRecyclerView.invalidate()
+            Handler().postDelayed({
+                swipeRefreshLayout.isRefreshing = false
+            }, 500)
         }
     }
 

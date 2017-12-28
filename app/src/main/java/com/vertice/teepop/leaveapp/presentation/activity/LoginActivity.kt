@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.orhanobut.hawk.Hawk
 import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
@@ -26,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loginApi: LoginApi
 
     private val TAG: String = LoginActivity::class.java.simpleName
+    private val user: Employee? = Hawk.get(Constant.USER_KEY)
 
     var disposables: CompositeDisposable = CompositeDisposable()
 
@@ -34,12 +37,24 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         LeaveApplication.component.inject(this)
 
+        user?.let {
+            editUsername.setText(user.userName)
+            editPassword.requestFocus()
+        }
+
         btSingIn.setOnClickListener({
             val username = editUsername.text.toString()
             val password = editPassword.text.toString()
 
-            val dialog = ProgressDialog.show(this, "", "Please Wait", true)
-            if (username != "" && password != "") {
+            if (username == "" && password == "") {
+                showUsernameError()
+                showPasswordError()
+            } else if (username == "") {
+                showUsernameError()
+            } else if (password == "") {
+                showPasswordError()
+            } else {
+                val dialog = ProgressDialog.show(this, "", "Please Wait", true)
                 val disposable = postLogin(username, password, dialog)
                 disposables.add(disposable)
             }
@@ -54,6 +69,24 @@ class LoginActivity : AppCompatActivity() {
 //            }
 //            handled
 //        }
+    }
+
+    private fun showPasswordError() {
+        passInputLayout.isErrorEnabled = true
+        passInputLayout.error = "Password can't be null"
+
+        YoYo.with(Techniques.Shake)
+                .duration(500)
+                .playOn(passInputLayout)
+    }
+
+    private fun showUsernameError() {
+        userInputLayout.isErrorEnabled = true
+        userInputLayout.error = "Username can't be null"
+
+        YoYo.with(Techniques.Shake)
+                .duration(500)
+                .playOn(userInputLayout)
     }
 
     override fun onStart() {
@@ -77,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
                         },
                         { error ->
                             dialog.cancel()
-                            Toast.makeText(this, "Something was wrong", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Could not login. Please try again later", Toast.LENGTH_SHORT).show()
                             Log.e(TAG, error.toString())
                         }
                 )
@@ -87,8 +120,13 @@ class LoginActivity : AppCompatActivity() {
         Hawk.put(Constant.USER_KEY, response)
         Toast.makeText(this, "Name: ${response.name} \n Username: ${response.userName}", Toast.LENGTH_SHORT).show()
 
+        startLeaveActivity()
+    }
+
+    private fun startLeaveActivity() {
         val intent = Intent(this, LeaveActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 }

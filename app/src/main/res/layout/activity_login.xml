@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
     android:orientation="vertical"
+    android:padding="8dp"
     tools:context="com.vertice.teepop.leaveapp.presentation.activity.LoginActivity">
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/userInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
 
         <EditText
             android:id="@+id/editUsername"
@@ -22,6 +24,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/passInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true">
@@ -40,6 +43,7 @@
         android:id="@+id/btSingIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="@string/sing_in" />
 
 </LinearLayout>
