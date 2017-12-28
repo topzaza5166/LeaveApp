@@ -60,27 +60,31 @@ class LeaveListFragment : Fragment() {
 
     private fun initInstances(rootView: View, savedInstanceState: Bundle?) {
         // Init 'View' instance(s) with rootView.findViewById here
-        viewModel.getLeaveByUserId(userId).observe(this, Observer {
-            it?.let {
-                Log.i(TAG, "$it")
-                leaveAdapter.leaves = it
-            }
-        })
+        getLeave()
 
         val mLayoutManager = LinearLayoutManager(context)
         leaveRecyclerView.apply {
             layoutManager = mLayoutManager
             adapter = AlphaInAnimationAdapter(leaveAdapter)
-
 //            addItemDecoration(DividerItemDecoration(context, mLayoutManager.orientation))
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            leaveRecyclerView.invalidate()
-            Handler().postDelayed({
-                swipeRefreshLayout.isRefreshing = false
-            }, 500)
+            getLeave()
         }
+    }
+
+    private fun getLeave() {
+        viewModel.getLeaveByUserId(userId).observe(this, Observer {
+            
+            if (swipeRefreshLayout.isRefreshing)
+                swipeRefreshLayout.isRefreshing = false
+
+            it?.let {
+                Log.i(TAG, "$it")
+                leaveAdapter.leaves = it
+            }
+        })
     }
 
     override fun onStart() {

@@ -11,10 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
-import android.widget.TimePicker
+import android.widget.*
 import com.google.gson.Gson
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.entity.Leave
@@ -74,8 +71,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         fab.setOnClickListener {
             sendLeave()
 
-            Snackbar.make(it, "Send Your Leave ", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
         }
     }
 
