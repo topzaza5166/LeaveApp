@@ -21,9 +21,8 @@ interface LeaveDao {
     fun getAllLeave(): LiveData<List<Leave>>
 
     @Query("SELECT * FROM Leave WHERE userId LIKE :arg0")
-    fun getLeaveByUserId(userId: Int): LiveData<List<Leave>>
+    fun getLeaveByUserId(userId: Int): LiveData<List<LeaveAndType>>
 
-    @Query("SELECT * FROM Leave" +
-            "INNER JOIN Type_Leave ON Leave.typeId = Type_Leave.id")
+    @Query("SELECT * FROM Leave")
     fun getLeaveAndType(): LiveData<List<LeaveAndType>>
 }

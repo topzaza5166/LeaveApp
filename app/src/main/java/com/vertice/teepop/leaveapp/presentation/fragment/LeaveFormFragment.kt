@@ -1,12 +1,11 @@
-package com.vertice.teepop.leaveapp.presentation.leave
-
-import android.arch.lifecycle.Observer
+package com.vertice.teepop.leaveapp.presentation.fragment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,10 +15,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
+import com.google.gson.Gson
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.model.Employee
+import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_EMPLOYEE
 import kotlinx.android.synthetic.main.fragment_leave_form.*
 import java.util.*
@@ -29,7 +30,7 @@ import java.util.*
  */
 class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
 
-    private val TAG: String = LeaveActivity::class.java.simpleName
+    private val TAG: String = this::class.java.simpleName
 
     lateinit var employee: Employee
 
@@ -61,6 +62,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     private fun init(savedInstanceState: Bundle?) {
         // Init Fragment level's variable(s) here
         employee = arguments?.getParcelable(KEY_ARG_EMPLOYEE) ?: Employee()
+        Log.i(TAG, "$employee")
     }
 
     private fun initInstances(rootView: View, savedInstanceState: Bundle?) {
@@ -68,6 +70,13 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         setSpinner()
         setDatePicker()
         setTimePicker()
+
+        fab.setOnClickListener {
+            sendLeave()
+
+            Snackbar.make(it, "Send Your Leave ", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        }
     }
 
     override fun onStart() {
@@ -110,17 +119,17 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     }
 
     private fun setDatePicker() {
-        fromView.setTextFormTo(resources.getString(R.string.from))
+        fromView.setTextFromDate()
         fromView.setOnClickListener {
             val dialog = getDatePickerDialog({ _, year, month, day ->
-                fromView.setDate(year, month + 1, day)
+                fromView.setDate(year, month, day)
             })
             dialog.show()
         }
-        toView.setTextFormTo(resources.getString(R.string.to))
+        toView.setTextToDate()
         toView.setOnClickListener {
             val dialog = getDatePickerDialog({ _, year, month, day ->
-                toView.setDate(year, month + 1, day)
+                toView.setDate(year, month, day)
             })
             dialog.show()
         }
@@ -147,8 +156,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     }
 
     fun sendLeave() {
-        val leave = Leave()
-        leave.apply {
+        val leave = Leave().apply {
             userId = employee.id
             typeId = typeList?.get(spinnerType.selectedItemPosition)?.id ?: 0
             leaveDate = Date()
@@ -157,7 +165,22 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
             timeLate = this@LeaveFormFragment.timeLate
             reason = editReason.text.toString()
         }
+        Log.i(TAG, leave.toString())
+        Log.i(TAG, Gson().toJson(leave))
         viewModel.postLeave(leave)
+    }
+
+    fun getLeaveFrom(): Leave {
+
+        return Leave().apply {
+            userId = employee.id
+            typeId = typeList?.get(spinnerType.selectedItemPosition)?.id ?: 0
+            leaveDate = Date()
+            fromDate = fromView.getDate()
+            toDate = toView.getDate()
+            timeLate = this@LeaveFormFragment.timeLate
+            reason = editReason.text.toString()
+        }
     }
 
     private fun toggleView() {

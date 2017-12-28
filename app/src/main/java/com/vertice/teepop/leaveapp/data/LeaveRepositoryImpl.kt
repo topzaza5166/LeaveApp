@@ -6,6 +6,7 @@ import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.local.LeaveDao
 import com.vertice.teepop.leaveapp.data.local.TypeLeaveDao
+import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 import com.vertice.teepop.leaveapp.data.remote.LeaveApi
 import io.reactivex.Scheduler
 
@@ -19,6 +20,15 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
 
     val TAG: String = LeaveRepositoryImpl::class.java.simpleName
 
+    override fun getAllLeaveAndType(): LiveData<List<LeaveAndType>> {
+        serviceApi.getAllLeave()
+                .subscribeOn(scheduler)
+                .subscribe({ leaves, _ ->
+                    leaves?.let { leaveDao.insertOrUpdateLeave(*leaves.toTypedArray()) }
+                })
+        return leaveDao.getLeaveAndType()
+    }
+
     override fun getAllLeave(): LiveData<List<Leave>> {
         serviceApi.getAllLeave()
                 .subscribeOn(scheduler)
@@ -28,21 +38,24 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
         return leaveDao.getAllLeave()
     }
 
-    override fun getLeaveByUserId(id: Int): LiveData<List<Leave>> {
+    override fun getLeaveByUserId(id: Int): LiveData<List<LeaveAndType>> {
+        Log.i(TAG, "id = $id")
         serviceApi.getLeaveByUserId(id)
                 .subscribeOn(scheduler)
-                .subscribe({ leaves, _ ->
-                    leaves?.let { leaveDao.insertOrUpdateLeave(*leaves.toTypedArray()) }
-                })
+                .subscribe(
+                        { leaves -> leaves?.let { leaveDao.insertOrUpdateLeave(*leaves.toTypedArray()) } },
+                        { error -> Log.e(TAG, "$error") })
+
         return leaveDao.getLeaveByUserId(id)
     }
 
     override fun postLeave(leave: Leave) {
         serviceApi.postLeave(leave)
                 .subscribeOn(scheduler)
-                .subscribe({ result, _ ->
-                    result?.let { leaveDao.insertOrUpdateLeave(result) }
-                })
+                .subscribe(
+                        { response -> response?.let { leaveDao.insertOrUpdateLeave(response) } },
+                        { error -> Log.e(TAG, error?.toString()) }
+                )
     }
 
     override fun getTypeLeave(): LiveData<List<TypeLeave>> {

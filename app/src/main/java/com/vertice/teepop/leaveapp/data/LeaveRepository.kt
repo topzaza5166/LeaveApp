@@ -3,6 +3,7 @@ package com.vertice.teepop.leaveapp.data
 import android.arch.lifecycle.LiveData
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
+import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 
 
 /**
@@ -16,5 +17,7 @@ interface LeaveRepository {
 
     fun getAllLeave(): LiveData<List<Leave>>
 
-    fun getLeaveByUserId(id: Int): LiveData<List<Leave>>
+    fun getLeaveByUserId(id: Int): LiveData<List<LeaveAndType>>
+
+    fun getAllLeaveAndType(): LiveData<List<LeaveAndType>>
 }

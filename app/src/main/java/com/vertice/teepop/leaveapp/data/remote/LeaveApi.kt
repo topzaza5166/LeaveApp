@@ -3,6 +3,7 @@ package com.vertice.teepop.leaveapp.data.remote
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import io.reactivex.Single
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -16,11 +17,11 @@ interface LeaveApi {
     fun getType(): Single<List<TypeLeave>>
 
     @POST("leave")
-    fun postLeave(leave: Leave): Single<Leave>
+    fun postLeave(@Body leave: Leave): Single<Leave>
 
     @GET("leave")
     fun getAllLeave(): Single<List<Leave>>
 
-    @GET("user/{id}")
+    @GET("leave/user/{id}")
     fun getLeaveByUserId(@Path("id") id: Int): Single<List<Leave>>
 }

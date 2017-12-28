@@ -1,9 +1,11 @@
 package com.vertice.teepop.leaveapp.presentation.view
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.presentation.view.state.BundleSavedState
 import kotlinx.android.synthetic.main.view_date_form.view.*
@@ -14,6 +16,8 @@ import java.util.*
  * Created by nuuneoi on 11/16/2014.
  */
 class DateFromView : BaseCustomViewGroup {
+
+    val TAG: String = this::class.java.simpleName
 
     val KEY_YEAR: String = "year"
     val KEY_MONTH: String = "month"
@@ -54,11 +58,13 @@ class DateFromView : BaseCustomViewGroup {
     private fun initInstances() {
         // findViewById hereval c = Calendar.getInstance()
         val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        c.let {
+            val year = it.get(Calendar.YEAR)
+            val month = it.get(Calendar.MONTH)
+            val day = it.get(Calendar.DAY_OF_MONTH)
 
-        setDate(year, month + 1, day)
+            setDate(year, month, day)
+        }
     }
 
     private fun initWithAttrs(attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) {
@@ -79,10 +85,11 @@ class DateFromView : BaseCustomViewGroup {
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
 
-        val savedState = BundleSavedState(superState)
-        savedState.bundle.putInt(KEY_YEAR, year)
-        savedState.bundle.putInt(KEY_MONTH, month)
-        savedState.bundle.putInt(KEY_DAY, day)
+        val savedState = BundleSavedState(superState).apply {
+            bundle.putInt(KEY_YEAR, year)
+            bundle.putInt(KEY_MONTH, month)
+            bundle.putInt(KEY_DAY, day)
+        }
 
         return savedState
     }
@@ -92,27 +99,39 @@ class DateFromView : BaseCustomViewGroup {
         super.onRestoreInstanceState(ss.superState)
 
         val bundle = ss.bundle
-        year = bundle.getInt(KEY_YEAR)
-        month = bundle.getInt(KEY_MONTH)
-        day = bundle.getInt(KEY_DAY)
+        bundle.let {
+            year = it.getInt(KEY_YEAR)
+            month = it.getInt(KEY_MONTH)
+            day = it.getInt(KEY_DAY)
+        }
     }
 
-    fun setTextFormTo(text: String) {
-        textFromTo.text = text
+    fun setTextToDate() {
+        textFromTo.text = resources.getText(R.string.to)
     }
 
+    fun setTextFromDate() {
+        textFromTo.text = resources.getText(R.string.from)
+    }
+
+    @SuppressLint("SetTextI18n")
     fun setDate(year: Int, month: Int, day: Int) {
         this.year = year
         this.month = month
         this.day = day
 
-        textDate.text = day.toString()
-        textMonth.text = month.toString()
-        textYear.text = year.toString()
+        textDate.text = "${this.day}"
+        textMonth.text = "${this.month + 1}"
+        textYear.text = "${this.year}"
     }
 
     fun getDate(): Date {
-        return Date(year, month, day)
+        val date = Calendar.getInstance().apply {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month)
+            set(Calendar.DAY_OF_MONTH, day)
+        }
+        return date.time
     }
 
 }

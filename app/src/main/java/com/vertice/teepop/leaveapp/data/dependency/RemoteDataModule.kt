@@ -20,7 +20,7 @@ class RemoteDataModule(val baseUrl: String) {
     @Provides
     @Singleton
     fun provideGson(): Gson = GsonBuilder()
-            .setDateFormat("dd/MM/yyyy")
+            .setDateFormat("MMM d, yyy HH:mm:ss a")
             .create()
 
     @Provides

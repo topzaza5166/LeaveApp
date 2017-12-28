@@ -4,64 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.vertice.teepop.leaveapp.presentation.leave.LeaveActivity">
+    android:fillViewport="true"
+    tools:context="com.vertice.teepop.leaveapp.presentation.activity.LeaveActivity">
     <!--tools:showIn="@layout/activity_leave"-->
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/spinnerType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.AppCompatSpinner>
-
-        <com.vertice.teepop.leaveapp.presentation.view.DateFromView
-            android:id="@+id/fromView"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:visibility="visible">
+            android:layout_margin="8dp"
+            app:cardCornerRadius="4dp">
 
-        </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
-
-        <com.vertice.teepop.leaveapp.presentation.view.DateFromView
-            android:id="@+id/toView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="visible">
-
-        </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
-
-        <TextView
-            android:id="@+id/textTimeLate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="left"
-            android:text="Time Late : 0.00 Minute"
-            android:visibility="gone" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <EditText
-                android:id="@+id/editReason"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/reason" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinnerType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-    </LinearLayout>
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent" />
+
+                <com.vertice.teepop.leaveapp.presentation.view.DateFromView
+                    android:id="@+id/fromView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="visible">
+
+                </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
+
+                <com.vertice.teepop.leaveapp.presentation.view.DateFromView
+                    android:id="@+id/toView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible">
+
+                </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
+
+                <TextView
+                    android:id="@+id/textTimeLate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="left"
+                    android:text="Time Late : 0.00 Minute"
+                    android:visibility="gone" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <EditText
+                        android:id="@+id/editReason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/reason" />
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_send" />
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.v4.widget.NestedScrollView>
 

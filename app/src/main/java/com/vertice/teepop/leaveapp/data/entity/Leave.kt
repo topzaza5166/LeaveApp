@@ -8,12 +8,7 @@ import java.util.*
 /**
  * Created by VerDev06 on 12/27/2017.
  */
-@Entity(tableName = "Leave",
-        foreignKeys = arrayOf(ForeignKey(
-                entity = TypeLeave::class,
-                parentColumns = arrayOf("id"),
-                childColumns = arrayOf("typeId")
-        )))
+@Entity(tableName = "Leave")
 class Leave {
 
     @PrimaryKey
@@ -63,5 +58,19 @@ class Leave {
     @ColumnInfo(name = "createdDate")
     @SerializedName("createdDate")
     @TypeConverters(DateConverter::class)
-    lateinit var createdDate: Date
+    var createdDate: Date = Date()
+
+    override fun toString(): String {
+        return "ID: $id \n " +
+                "UserId: $userId \n " +
+                "TypeId: $typeId \n " +
+                "LeaveDate: $leaveDate \n " +
+                "FromDate: $fromDate \n " +
+                "ToDate: $toDate \n " +
+                "TimeLate: $timeLate \n " +
+                "Reason: $reason \n " +
+                "Approve $approve \n " +
+                "LeaveStatus $leaveStatus \n " +
+                "CreateDate $createdDate"
+    }
 }

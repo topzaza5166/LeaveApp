@@ -3,9 +3,8 @@ package com.vertice.teepop.leaveapp.presentation.dependency
 import com.vertice.teepop.leaveapp.data.dependency.LeaveRepositoryModule
 import com.vertice.teepop.leaveapp.data.dependency.LocalDataModule
 import com.vertice.teepop.leaveapp.data.dependency.RemoteDataModule
-import com.vertice.teepop.leaveapp.presentation.leave.LeaveActivity
-import com.vertice.teepop.leaveapp.presentation.leave.LeaveViewModel
-import com.vertice.teepop.leaveapp.presentation.login.LoginActivity
+import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
+import com.vertice.teepop.leaveapp.presentation.activity.LoginActivity
 import dagger.Component
 import javax.inject.Singleton
 

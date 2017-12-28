@@ -21,4 +21,6 @@
     <string name="reason">Reason</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="manager">Manager</string>
+    <string name="approved">Approved</string>
 </resources>

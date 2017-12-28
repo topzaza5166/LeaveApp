@@ -8,7 +8,6 @@
         android:id="@+id/textFromTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
         android:text="@string/from" />
 
     <View
@@ -25,37 +24,38 @@
         android:id="@+id/textDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="21"
         android:textColor="@android:color/holo_red_light" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="Month" />
 
     <TextView
         android:id="@+id/textMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="February"
         android:textColor="@android:color/holo_red_light" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="Year" />
 
     <TextView
         android:id="@+id/textYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
         android:text="1995"
         android:textColor="@android:color/holo_red_light" />
+
 
 </LinearLayout>

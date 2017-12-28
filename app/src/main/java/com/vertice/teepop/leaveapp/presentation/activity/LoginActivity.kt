@@ -1,4 +1,4 @@
-package com.vertice.teepop.leaveapp.presentation.login
+package com.vertice.teepop.leaveapp.presentation.activity
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -11,7 +11,6 @@ import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.data.remote.LoginApi
-import com.vertice.teepop.leaveapp.presentation.leave.LeaveActivity
 import com.vertice.teepop.leaveapp.util.Constant
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
