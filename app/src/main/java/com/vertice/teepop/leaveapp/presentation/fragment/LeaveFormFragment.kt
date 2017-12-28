@@ -70,6 +70,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
 
         fab.setOnClickListener {
             sendLeave()
+            editReason.setText("")
 
             Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
         }
@@ -151,7 +152,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         return DatePickerDialog(context, listener, year, month, day)
     }
 
-    fun sendLeave() {
+    private fun sendLeave() {
         val leave = Leave().apply {
             userId = employee.id
             typeId = typeList?.get(spinnerType.selectedItemPosition)?.id ?: 0
