@@ -40,6 +40,14 @@ class LeaveActivity : AppCompatActivity() {
 
         viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
 
+            override fun getPageTitle(position: Int): CharSequence? {
+                return when (position) {
+                    0 -> "FORM"
+                    1 -> "LEAVE"
+                    else -> "LEAVE"
+                }
+            }
+
             override fun getItem(position: Int): Fragment {
                 return when (position) {
                     0 -> LeaveFormFragment.newInstance(employee)
@@ -55,15 +63,17 @@ class LeaveActivity : AppCompatActivity() {
         }
 
         tabLayout.setupWithViewPager(viewPager)
-        tabLayout.getTabAt(0)?.text = "FORM"
-        tabLayout.getTabAt(1)?.text = "LEAVE"
 
 //        supportFragmentManager.beginTransaction()
 //                .add(contentContainer.id, LeaveFormFragment.newInstance(employee))
 //                .commit()
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Your Type ID Selected is ", Snackbar.LENGTH_LONG)
+            val fragment = ((viewPager.adapter as FragmentStatePagerAdapter).getItem(0))
+            if (fragment is LeaveFormFragment)
+                fragment.sendLeave()
+
+            Snackbar.make(view, "Send Your Leave ", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
     }

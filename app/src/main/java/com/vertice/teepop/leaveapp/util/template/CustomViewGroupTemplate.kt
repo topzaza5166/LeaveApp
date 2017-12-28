@@ -64,11 +64,12 @@ class CustomViewGroupTemplate : BaseCustomViewGroup {
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
 
+        val savedState = BundleSavedState(superState)
         // Save Instance State(s) here to the 'savedState.getBundle()'
         // for example,
         // savedState.getBundle().putString("key", value);
 
-        return BundleSavedState(superState)
+        return savedState
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {

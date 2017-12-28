@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import com.vertice.teepop.leaveapp.R
+import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_EMPLOYEE
@@ -142,6 +144,20 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         return DatePickerDialog(context, listener, year, month, day)
+    }
+
+    fun sendLeave() {
+        val leave = Leave()
+        leave.apply {
+            userId = employee.id
+            typeId = typeList?.get(spinnerType.selectedItemPosition)?.id ?: 0
+            leaveDate = Date()
+            fromDate = fromView.getDate()
+            toDate = toView.getDate()
+            timeLate = this@LeaveFormFragment.timeLate
+            reason = editReason.text.toString()
+        }
+        viewModel.postLeave(leave)
     }
 
     private fun toggleView() {

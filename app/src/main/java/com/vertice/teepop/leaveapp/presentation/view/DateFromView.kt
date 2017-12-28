@@ -15,6 +15,14 @@ import java.util.*
  */
 class DateFromView : BaseCustomViewGroup {
 
+    val KEY_YEAR: String = "year"
+    val KEY_MONTH: String = "month"
+    val KEY_DAY: String = "day"
+
+    var year: Int = 0
+    var month: Int = 0
+    var day: Int = 0
+
     constructor(context: Context) : super(context) {
         initInflate()
         initInstances()
@@ -50,7 +58,7 @@ class DateFromView : BaseCustomViewGroup {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        setDate(year, month, day)
+        setDate(year, month + 1, day)
     }
 
     private fun initWithAttrs(attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) {
@@ -71,11 +79,12 @@ class DateFromView : BaseCustomViewGroup {
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
 
-        // Save Instance State(s) here to the 'savedState.getBundle()'
-        // for example,
-        // savedState.getBundle().putString("key", value);
+        val savedState = BundleSavedState(superState)
+        savedState.bundle.putInt(KEY_YEAR, year)
+        savedState.bundle.putInt(KEY_MONTH, month)
+        savedState.bundle.putInt(KEY_DAY, day)
 
-        return BundleSavedState(superState)
+        return savedState
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
@@ -83,7 +92,9 @@ class DateFromView : BaseCustomViewGroup {
         super.onRestoreInstanceState(ss.superState)
 
         val bundle = ss.bundle
-        // Restore State from bundle here
+        year = bundle.getInt(KEY_YEAR)
+        month = bundle.getInt(KEY_MONTH)
+        day = bundle.getInt(KEY_DAY)
     }
 
     fun setTextFormTo(text: String) {
@@ -91,9 +102,17 @@ class DateFromView : BaseCustomViewGroup {
     }
 
     fun setDate(year: Int, month: Int, day: Int) {
+        this.year = year
+        this.month = month
+        this.day = day
+
         textDate.text = day.toString()
         textMonth.text = month.toString()
         textYear.text = year.toString()
+    }
+
+    fun getDate(): Date {
+        return Date(year, month, day)
     }
 
 }

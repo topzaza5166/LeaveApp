@@ -11,7 +11,8 @@ import java.util.*
 
 @SuppressLint("ParcelCreator")
 @Parcelize
-data class Employee(var name: String = "",
+data class Employee(var id: Int = 0,
+                    var name: String = "",
                     var userName: String = "",
                     var roleId: Int = 0,
                     var startWorkDate: Date? = Date(),
