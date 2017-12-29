@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.vertice.teepop.leaveapp.R
+import com.vertice.teepop.leaveapp.data.model.Approved
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 import kotlinx.android.synthetic.main.list_item_leave.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 import kotlin.properties.Delegates
 
@@ -21,6 +23,10 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
     var leaves: List<LeaveAndType> by Delegates
             .observable(ArrayList()) { _, _, _ -> notifyDataSetChanged() }
 
+    var approveChange: MutableList<Approved> = ArrayList()
+
+    var mode: String = "user"
+
     override fun getItemCount(): Int {
         return leaves.size
     }
@@ -31,13 +37,20 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
     }
 
     override fun onBindViewHolder(holder: LeaveAdapter.LeaveHolder?, position: Int) {
-        holder?.bindData(leaves[position])
+        holder?.bindData(leaves[position], mode, addApprovedList)
+    }
+
+    private val addApprovedList: (Int, Boolean) -> Unit = { leaveId, boolean ->
+        if (boolean) {
+            approveChange.add(Approved(leaveId, 1))
+        } else
+            approveChange.remove(Approved(leaveId, 0))
     }
 
     class LeaveHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("SetTextI18n")
-        fun bindData(leaveAndType: LeaveAndType) = with(itemView) {
+        fun bindData(leaveAndType: LeaveAndType, mode: String, checkChangeListener: (Int, Boolean) -> Unit) = with(itemView) {
             textTypeLeaveCardView.text = leaveAndType.type[0].typeName
             if (leaveAndType.type[0].typeName == "Late arrival") {
                 setTimeLate(leaveAndType.leave.timeLate)
@@ -47,8 +60,26 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
             textReasonCardView.text = "Reason: ${leaveAndType.leave.reason}"
 
+            if (leaveAndType.leave.approve == 1) {
+                checkApprovedCardView.isChecked = true
+            }
+//            else if (mode == "admin") {
+//                enableCheckApprove(leaveAndType, checkChangeListener)
+//            }
+
             checkManagerCardView.isChecked = true
-            checkApprovedCardView.isChecked = true
+        }
+
+        private fun View.enableCheckApprove(leaveAndType: LeaveAndType, checkChangeListener: (Int, Boolean) -> Unit) {
+            checkApprovedCardView.isEnabled = true
+            checkApprovedCardView.setOnCheckedChangeListener({ _, boolean ->
+                if (boolean) {
+                    leaveAndType.leave.approve = 1
+                } else {
+                    leaveAndType.leave.approve = 0
+                }
+                checkChangeListener.invoke(leaveAndType.leave.id, boolean)
+            })
         }
 
         @SuppressLint("SimpleDateFormat", "SetTextI18n")

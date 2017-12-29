@@ -118,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun responseSuccess(response: Employee) {
         Hawk.put(Constant.USER_KEY, response)
-        Toast.makeText(this, "Name: ${response.name} \n Username: ${response.userName}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, " Name: ${response.name} \n Username: ${response.userName} \n Role: ${response.role_name}", Toast.LENGTH_SHORT).show()
 
         startLeaveActivity()
     }

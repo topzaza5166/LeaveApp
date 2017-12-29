@@ -38,6 +38,19 @@
 
     </android.support.v4.view.ViewPager>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_done"
+        android:visibility="gone"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/viewPager"
+        app:layout_anchorGravity="right|bottom" />
+
+    <!--app:layout_behavior="com.vertice.teepop.leaveapp.util.ScrollAwareFABBehavior"-->
+
     <!--<FrameLayout-->
     <!--android:id="@+id/contentContainer"-->
     <!--android:layout_width="match_parent"-->

@@ -17,6 +17,7 @@ data class Employee(var id: Int = 0,
                     var roleId: Int = 0,
                     var startWorkDate: Date? = Date(),
                     var status: Int = 0,
-                    var createdDate: Date? = Date()) : Parcelable {
+                    var createdDate: Date? = Date(),
+                    var role_name: String = "") : Parcelable {
 
 }

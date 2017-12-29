@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import com.vertice.teepop.leaveapp.data.LeaveRepository
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
+import com.vertice.teepop.leaveapp.data.model.Approved
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 import javax.inject.Inject
 
@@ -22,7 +23,9 @@ class LeaveViewModel : ViewModel() {
 
     private var types: LiveData<List<TypeLeave>>? = null
 
-    private var leavaAndType: LiveData<List<LeaveAndType>>? = null
+    private var leaveAll : LiveData<List<LeaveAndType>>? = null
+
+    private var leaveAndType: LiveData<List<LeaveAndType>>? = null
 
     fun getAllType(): LiveData<List<TypeLeave>> {
         // This is a simple way to cache data. You could cache it in db instead.
@@ -36,17 +39,20 @@ class LeaveViewModel : ViewModel() {
     }
 
     fun getLeaveAndType(): LiveData<List<LeaveAndType>> {
-        leavaAndType = leavaAndType ?: leaveRepo.getAllLeaveAndType()
-        return leavaAndType!!
+        leaveAll = leaveAll ?: leaveRepo.getAllLeaveAndType()
+        return leaveAll!!
     }
 
     fun getLeaveByUserId(id: Int): LiveData<List<LeaveAndType>> {
-        leavaAndType = leavaAndType ?: leaveRepo.getLeaveByUserId(id)
-        return leavaAndType!!
+        leaveAndType = leaveAndType ?: leaveRepo.getLeaveByUserId(id)
+        return leaveAndType!!
     }
 
     fun postLeave(leave: Leave) {
         leaveRepo.postLeave(leave)
     }
 
+    fun postApproved(approves: List<Approved>) {
+        leaveRepo.postApprove(approves)
+    }
 }

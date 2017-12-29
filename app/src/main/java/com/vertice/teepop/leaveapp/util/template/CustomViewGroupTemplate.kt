@@ -39,7 +39,7 @@ class CustomViewGroupTemplate : BaseCustomViewGroup {
     }
 
     private fun initInflate() {
-        inflate(context, R.layout.activity_main, this)
+        inflate(context, R.layout.activity_login, this)
     }
 
     private fun initInstances() {

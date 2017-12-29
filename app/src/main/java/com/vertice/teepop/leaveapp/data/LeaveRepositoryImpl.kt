@@ -6,6 +6,7 @@ import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.local.LeaveDao
 import com.vertice.teepop.leaveapp.data.local.TypeLeaveDao
+import com.vertice.teepop.leaveapp.data.model.Approved
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 import com.vertice.teepop.leaveapp.data.remote.LeaveApi
 import io.reactivex.Scheduler
@@ -68,5 +69,13 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
         return typeLeaveDao.getAllType()
     }
 
+    override fun postApprove(approves: List<Approved>) {
+        serviceApi.postApprove(approves)
+                .subscribeOn(scheduler)
+                .subscribe(
+                        { response -> response?.let { leaveDao.insertOrUpdateLeave(*response.toTypedArray()) } },
+                        { error -> Log.e(TAG, error?.toString()) }
+                )
+    }
 
 }

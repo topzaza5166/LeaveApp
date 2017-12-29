@@ -2,6 +2,7 @@ package com.vertice.teepop.leaveapp.data.remote
 
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
+import com.vertice.teepop.leaveapp.data.model.Approved
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,4 +25,7 @@ interface LeaveApi {
 
     @GET("leave/user/{id}")
     fun getLeaveByUserId(@Path("id") id: Int): Single<List<Leave>>
+
+    @POST("leave/approve")
+    fun postApprove(@Body approves: List<Approved>): Single<List<Leave>>
 }
