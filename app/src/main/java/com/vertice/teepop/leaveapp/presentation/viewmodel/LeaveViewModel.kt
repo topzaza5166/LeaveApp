@@ -23,7 +23,7 @@ class LeaveViewModel : ViewModel() {
 
     private var types: LiveData<List<TypeLeave>>? = null
 
-    private var leaveAll : LiveData<List<LeaveAndType>>? = null
+//    private var leaveAll : LiveData<List<LeaveAndType>>? = null
 
     private var leaveAndType: LiveData<List<LeaveAndType>>? = null
 
@@ -39,8 +39,8 @@ class LeaveViewModel : ViewModel() {
     }
 
     fun getLeaveAndType(): LiveData<List<LeaveAndType>> {
-        leaveAll = leaveAll ?: leaveRepo.getAllLeaveAndType()
-        return leaveAll!!
+        leaveAndType = leaveAndType ?: leaveRepo.getAllLeaveAndType()
+        return leaveAndType!!
     }
 
     fun getLeaveByUserId(id: Int): LiveData<List<LeaveAndType>> {

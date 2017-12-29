@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.google.gson.Gson
+import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
@@ -35,7 +36,9 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     var typeList: List<TypeLeave>? = null
 
     private val viewModel by lazy {
-        ViewModelProviders.of(activity!!).get(LeaveViewModel::class.java)
+        ViewModelProviders.of(activity!!).get(LeaveViewModel::class.java).also {
+            LeaveApplication.component.inject(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

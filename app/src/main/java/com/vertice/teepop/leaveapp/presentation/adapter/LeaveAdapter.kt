@@ -20,7 +20,7 @@ import kotlin.properties.Delegates
  */
 class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
-    var leaves: List<LeaveAndType> by Delegates
+    var leaves: MutableList<LeaveAndType> by Delegates
             .observable(ArrayList()) { _, _, _ -> notifyDataSetChanged() }
 
     var approveChange: MutableList<Approved> = ArrayList()
@@ -49,23 +49,28 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
     class LeaveHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint("SetTextI18n", "SimpleDateFormat")
         fun bindData(leaveAndType: LeaveAndType, mode: String, checkChangeListener: (Int, Boolean) -> Unit) = with(itemView) {
-            textTypeLeaveCardView.text = leaveAndType.type[0].typeName
-            if (leaveAndType.type[0].typeName == "Late arrival") {
-                setTimeLate(leaveAndType.leave.timeLate)
-            } else {
-                setGroupLeave(leaveAndType.leave.fromDate, leaveAndType.leave.toDate)
+            if (leaveAndType.type.isNotEmpty()) {
+                textTypeLeaveCardView.text = leaveAndType.type[0].typeName
+                if (leaveAndType.type[0].typeName == "Late arrival") {
+                    setTimeLate(leaveAndType.leave.timeLate)
+                } else {
+                    setGroupLeave(leaveAndType.leave.fromDate, leaveAndType.leave.toDate)
+                }
             }
 
             textReasonCardView.text = "Reason: ${leaveAndType.leave.reason}"
 
+            val date = SimpleDateFormat("dd/MM/yyyy").format(leaveAndType.leave.leaveDate)
+            textLeaveDateCardView.text = "Leave Date: $date"
+
             if (leaveAndType.leave.approve == 1) {
                 checkApprovedCardView.isChecked = true
             }
-//            else if (mode == "admin") {
-//                enableCheckApprove(leaveAndType, checkChangeListener)
-//            }
+            else if (mode == "admin") {
+                enableCheckApprove(leaveAndType, checkChangeListener)
+            }
 
             checkManagerCardView.isChecked = true
         }
@@ -84,11 +89,10 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
         @SuppressLint("SimpleDateFormat", "SetTextI18n")
         private fun View.setGroupLeave(fromDate: Date, toDate: Date) {
-            val fromDateFormat = SimpleDateFormat("dd/MM/yyyy")
-            textFromDateCardView.text = "From: " + fromDateFormat.format(fromDate)
 
-            val toDateFormat = SimpleDateFormat("dd/MM/yyyy")
-            textToDateCardView.text = "To: " + toDateFormat.format(toDate)
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+            textFromDateCardView.text = "From: " + dateFormat.format(fromDate)
+            textToDateCardView.text = "To: " + dateFormat.format(toDate)
 
             val fromCalendar = Calendar.getInstance().apply { time = fromDate }
             val toCalendar = Calendar.getInstance().apply { time = toDate }

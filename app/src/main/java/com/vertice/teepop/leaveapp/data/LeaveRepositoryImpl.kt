@@ -62,9 +62,10 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
     override fun getTypeLeave(): LiveData<List<TypeLeave>> {
         serviceApi.getType()
                 .subscribeOn(scheduler)
-                .subscribe { type, _ ->
-                    type?.let { typeLeaveDao.insertOrUpdateType(*type.toTypedArray()) }
-                }
+                .subscribe(
+                        { type -> type?.let { typeLeaveDao.insertOrUpdateType(*type.toTypedArray()) } },
+                        { error -> Log.e(TAG, "$error") }
+                )
 
         return typeLeaveDao.getAllType()
     }

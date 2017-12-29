@@ -35,7 +35,7 @@ class LeaveActivity : AppCompatActivity() {
 
     var pageNum: Int = 2
 
-    lateinit var viewModel: LeaveViewModel
+//    lateinit var viewModel: LeaveViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +48,10 @@ class LeaveActivity : AppCompatActivity() {
         if (employee.role_name == "admin")
             pageNum = 3
 
-        viewModel = ViewModelProviders.of(this).get(LeaveViewModel::class.java)
-        viewModel.also {
-            LeaveApplication.component.inject(it)
-        }
+//        viewModel = ViewModelProviders.of(this).get(LeaveViewModel::class.java)
+//        viewModel.also {
+//            LeaveApplication.component.inject(it)
+//        }
 
         viewPager.adapter = viewPagerAdapter
         viewPager.addOnPageChangeListener(onPageChangeListener)

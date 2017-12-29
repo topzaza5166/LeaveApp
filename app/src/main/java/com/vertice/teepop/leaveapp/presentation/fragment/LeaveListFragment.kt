@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.presentation.adapter.LeaveAdapter
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
@@ -27,7 +28,9 @@ class LeaveListFragment : Fragment() {
     var userId: Int = 0
 
     private val viewModel by lazy {
-        ViewModelProviders.of(activity!!).get(LeaveViewModel::class.java)
+        ViewModelProviders.of(this).get(LeaveViewModel::class.java).also {
+            LeaveApplication.component.inject(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +66,7 @@ class LeaveListFragment : Fragment() {
         val mLayoutManager = LinearLayoutManager(context)
         leaveRecyclerView.apply {
             layoutManager = mLayoutManager
-            adapter = AlphaInAnimationAdapter(leaveAdapter)
+            adapter = leaveAdapter
 //            addItemDecoration(DividerItemDecoration(context, mLayoutManager.orientation))
         }
 
@@ -81,7 +84,7 @@ class LeaveListFragment : Fragment() {
 
             it?.let {
                 Log.i(TAG, "$it")
-                leaveAdapter.leaves = it
+                leaveAdapter.leaves = it.toMutableList()
             }
         })
     }

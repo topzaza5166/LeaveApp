@@ -17,12 +17,12 @@ interface LeaveDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateLeave(vararg leave: Leave)
 
-    @Query("SELECT * FROM Leave")
+    @Query("SELECT * FROM Leave ORDER BY id DESC")
     fun getAllLeave(): LiveData<List<Leave>>
 
-    @Query("SELECT * FROM Leave WHERE userId LIKE :arg0")
+    @Query("SELECT * FROM Leave WHERE userId LIKE :arg0 ORDER BY id DESC")
     fun getLeaveByUserId(userId: Int): LiveData<List<LeaveAndType>>
 
-    @Query("SELECT * FROM Leave")
+    @Query("SELECT * FROM Leave ORDER BY id DESC")
     fun getLeaveAndType(): LiveData<List<LeaveAndType>>
 }
