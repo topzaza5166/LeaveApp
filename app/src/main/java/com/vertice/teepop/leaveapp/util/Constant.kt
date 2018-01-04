@@ -10,4 +10,7 @@ object Constant {
     val KEY_ARG_USER_ID = "UserId"
     val KEY_ARG_ROLE = "Role"
     val KEY_ARG_EMPLOYEE: String = "key_employee"
+
+    val MODE_ADMIN = "admin"
+    val MODE_USER = "user"
 }

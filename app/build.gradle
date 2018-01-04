@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.2'
@@ -23,6 +25,9 @@ android {
     }
     androidExtensions {
         experimental = true
+    }
+    dataBinding {
+        enabled = true
     }
 }
 kapt {
@@ -71,4 +76,6 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.3@aar'
 
     implementation 'jp.wasabeef:recyclerview-animators:2.2.7'
+
+    kapt 'com.android.databinding:compiler:3.0.1'
 }

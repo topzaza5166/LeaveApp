@@ -21,6 +21,7 @@ import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_EMPLOYEE
 import kotlinx.android.synthetic.main.fragment_leave_form.*
+import kotlinx.android.synthetic.main.view_date_form.view.*
 import java.util.*
 
 /**
@@ -120,14 +121,15 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
 
     private fun setDatePicker() {
         fromView.setTextFromDate()
-        fromView.setOnClickListener {
+        fromView.clickChange.setOnClickListener {
             val dialog = getDatePickerDialog({ _, year, month, day ->
                 fromView.setDate(year, month, day)
             })
             dialog.show()
         }
+
         toView.setTextToDate()
-        toView.setOnClickListener {
+        toView.clickChange.setOnClickListener {
             val dialog = getDatePickerDialog({ _, year, month, day ->
                 toView.setDate(year, month, day)
             })
@@ -136,23 +138,27 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     }
 
     private fun setTimePicker() {
-        textTimeLate.setOnClickListener {
-            val c = Calendar.getInstance()
-            val hour = c.get(Calendar.HOUR_OF_DAY)
-            val minute = c.get(Calendar.MINUTE)
+        buttonTimeLate.setOnClickListener {
+            Calendar.getInstance().also {
+                val hour = it.get(Calendar.HOUR_OF_DAY)
+                val minute = it.get(Calendar.MINUTE)
 
-            val dialog = TimePickerDialog(context, this, hour - 9, minute, true)
-            dialog.show()
+                val dialog = TimePickerDialog(context, this, hour - 9, minute, true)
+                dialog.show()
+            }
         }
     }
 
     private fun getDatePickerDialog(listener: (DatePicker, Int, Int, Int) -> Unit): DatePickerDialog {
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        Calendar.getInstance().apply {
+            val year = get(Calendar.YEAR)
+            val month = get(Calendar.MONTH)
+            val day = get(Calendar.DAY_OF_MONTH)
 
-        return DatePickerDialog(context, listener, year, month, day)
+            return DatePickerDialog(context, listener, year, month, day)
+        }
+
+        return DatePickerDialog(context, listener, 0, 0, 0)
     }
 
     private fun sendLeave() {
@@ -170,19 +176,6 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         viewModel.postLeave(leave)
     }
 
-    fun getLeaveFrom(): Leave {
-
-        return Leave().apply {
-            userId = employee.id
-            typeId = typeList?.get(spinnerType.selectedItemPosition)?.id ?: 0
-            leaveDate = Date()
-            fromDate = fromView.getDate()
-            toDate = toView.getDate()
-            timeLate = this@LeaveFormFragment.timeLate
-            reason = editReason.text.toString()
-        }
-    }
-
     private fun toggleView() {
         toView.apply {
             visibility = if (visibility == View.GONE) View.VISIBLE else View.GONE
@@ -191,7 +184,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
             visibility = if (visibility == View.GONE) View.VISIBLE else View.GONE
         }
 
-        textTimeLate.apply {
+        layoutTimeLate.apply {
             visibility = if (visibility == View.GONE) View.VISIBLE else View.GONE
         }
     }
@@ -211,14 +204,13 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             if (typeList?.get(spinnerType.selectedItemPosition)?.typeName.equals("Late arrival")
-                    && textTimeLate.visibility == View.GONE) {
+                    && layoutTimeLate.visibility == View.GONE) {
                 toggleView()
-            } else if (textTimeLate.visibility == View.VISIBLE) {
+            } else if (layoutTimeLate.visibility == View.VISIBLE) {
                 toggleView()
             }
         }
     }
-
 
     companion object {
 

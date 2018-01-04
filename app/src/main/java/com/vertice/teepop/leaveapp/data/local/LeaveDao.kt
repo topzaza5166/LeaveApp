@@ -20,7 +20,7 @@ interface LeaveDao {
     @Query("SELECT * FROM Leave ORDER BY id DESC")
     fun getAllLeave(): LiveData<List<Leave>>
 
-    @Query("SELECT * FROM Leave WHERE userId LIKE :arg0 ORDER BY id DESC")
+    @Query("SELECT * FROM Leave WHERE userId LIKE :userId ORDER BY id DESC")
     fun getLeaveByUserId(userId: Int): LiveData<List<LeaveAndType>>
 
     @Query("SELECT * FROM Leave ORDER BY id DESC")

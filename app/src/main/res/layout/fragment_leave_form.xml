@@ -43,7 +43,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:visibility="visible">
+                    android:visibility="visible"
+                    tools:visibility="gone">
 
                 </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
 
@@ -53,19 +54,52 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
-                    android:visibility="visible">
+                    android:visibility="visible"
+                    tools:visibility="gone">
 
                 </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
 
-                <TextView
-                    android:id="@+id/textTimeLate"
+
+                <LinearLayout
+                    android:id="@+id/layoutTimeLate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="left"
-                    android:text="Time Late : 0.00 Minute"
-                    android:visibility="gone" />
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Time Late : " />
+
+                    <TextView
+                        android:id="@+id/textTimeLate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Minute" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/buttonTimeLate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Change"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"

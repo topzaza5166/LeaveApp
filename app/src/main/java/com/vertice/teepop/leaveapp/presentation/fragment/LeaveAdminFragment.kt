@@ -11,8 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
+import com.vertice.teepop.leaveapp.data.model.Approved
 import com.vertice.teepop.leaveapp.presentation.adapter.LeaveAdapter
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
+import com.vertice.teepop.leaveapp.util.Constant
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 
 import kotlinx.android.synthetic.main.fragment_leave_admin.*
@@ -56,7 +58,7 @@ class LeaveAdminFragment : Fragment() {
 
     private fun initInstances(rootView: View, savedInstanceState: Bundle?) {
         // Init 'View' instance(s) with rootView.findViewById here
-        leaveAdapter.mode = "admin"
+        leaveAdapter.mode = Constant.MODE_ADMIN
 
         getLeave()
 
@@ -74,8 +76,10 @@ class LeaveAdminFragment : Fragment() {
     }
 
     fun postApproved() {
-        viewModel.postApproved(leaveAdapter.approveChange)
-        Log.i(TAG, leaveAdapter.approveChange.toString())
+        viewModel.postApproved(leaveAdapter.approveChange.map { Approved(it.key, it.value) })
+        Log.i(TAG, "ApproveChange ${leaveAdapter.approveChange}")
+
+        leaveAdapter.approveChange.clear()
     }
 
     override fun onStart() {
@@ -108,7 +112,7 @@ class LeaveAdminFragment : Fragment() {
                 swipeRefreshLayout.isRefreshing = false
 
             it?.let {
-                Log.i(TAG, "$it")
+                Log.i(TAG, "Leave is Changed ${it.size}")
                 leaveAdapter.leaves = it.toMutableList()
             }
         })

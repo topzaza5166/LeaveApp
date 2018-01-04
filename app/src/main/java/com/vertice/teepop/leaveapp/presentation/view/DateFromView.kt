@@ -6,6 +6,8 @@ import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.presentation.view.state.BundleSavedState
 import kotlinx.android.synthetic.main.view_date_form.view.*
@@ -108,6 +110,7 @@ class DateFromView : BaseCustomViewGroup {
 
     fun setTextToDate() {
         textFromTo.text = resources.getText(R.string.to)
+        viewMargin.visibility = View.VISIBLE
     }
 
     fun setTextFromDate() {

@@ -1,18 +1,13 @@
 package com.vertice.teepop.leaveapp.presentation.adapter
 
-import android.annotation.SuppressLint
+import android.support.v7.widget.AppCompatCheckBox
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.vertice.teepop.leaveapp.R
-import com.vertice.teepop.leaveapp.data.model.Approved
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
-import kotlinx.android.synthetic.main.list_item_leave.view.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
-
+import com.vertice.teepop.leaveapp.databinding.ListItemLeaveBinding
+import com.vertice.teepop.leaveapp.util.Constant
 import kotlin.properties.Delegates
 
 /**
@@ -20,94 +15,61 @@ import kotlin.properties.Delegates
  */
 class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
+    val TAG: String = this::class.java.simpleName
+
     var leaves: MutableList<LeaveAndType> by Delegates
-            .observable(ArrayList()) { _, _, _ -> notifyDataSetChanged() }
+            .observable(ArrayList()) { _, _, _ ->
+                notifyDataSetChanged()
+            }
 
-    var approveChange: MutableList<Approved> = ArrayList()
+    val approved: MutableList<Boolean> by lazy {
+        leaves.map { it.leave.approve == 1 }.toMutableList()
+    }
+    var approveChange: MutableMap<Int, Int> = HashMap()
 
-    var mode: String = "user"
+    var mode: String = Constant.MODE_USER
 
     override fun getItemCount(): Int {
         return leaves.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LeaveAdapter.LeaveHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_leave, parent, false)
-        return LeaveHolder(view)
+        val binding = ListItemLeaveBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
+        return LeaveHolder(binding)
     }
 
     override fun onBindViewHolder(holder: LeaveAdapter.LeaveHolder?, position: Int) {
-        holder?.bindData(leaves[position], mode, addApprovedList)
+        holder?.bindData(leaves[position], mode, addApproveChange, position)
     }
 
-    private val addApprovedList: (Int, Boolean) -> Unit = { leaveId, boolean ->
-        if (boolean) {
-            approveChange.add(Approved(leaveId, 1))
-        } else
-            approveChange.remove(Approved(leaveId, 0))
+    private val addApproveChange: (Int, Int, Int) -> Unit = { leaveId, approve, position ->
+        Log.i(TAG, "CheckedChange at Id: $leaveId Boolean: $approve")
+        approveChange.apply {
+            if (containsKey(leaveId)) {
+                remove(leaveId)
+            } else {
+                put(leaveId, approve)
+            }
+        }
+
+        leaves[position].leave.approve = approve
     }
 
-    class LeaveHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class LeaveHolder(val binding: ListItemLeaveBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("SetTextI18n", "SimpleDateFormat")
-        fun bindData(leaveAndType: LeaveAndType, mode: String, checkChangeListener: (Int, Boolean) -> Unit) = with(itemView) {
-            if (leaveAndType.type.isNotEmpty()) {
-                textTypeLeaveCardView.text = leaveAndType.type[0].typeName
-                if (leaveAndType.type[0].typeName == "Late arrival") {
-                    setTimeLate(leaveAndType.leave.timeLate)
-                } else {
-                    setGroupLeave(leaveAndType.leave.fromDate, leaveAndType.leave.toDate)
+        fun bindData(leaveAndType: LeaveAndType, mMode: String, addApproveChange: (Int, Int, Int) -> Unit, position: Int) {
+            with(binding) {
+                item = leaveAndType
+                mode = mMode
+
+                checkApprovedCardView.setOnClickListener {
+                    if (it is AppCompatCheckBox) {
+                        addApproveChange.invoke(leaveAndType.leave.id, if (it.isChecked) 1 else 0, position)
+
+                    }
                 }
+                executePendingBindings()
             }
-
-            textReasonCardView.text = "Reason: ${leaveAndType.leave.reason}"
-
-            val date = SimpleDateFormat("dd/MM/yyyy").format(leaveAndType.leave.leaveDate)
-            textLeaveDateCardView.text = "Leave Date: $date"
-
-            if (leaveAndType.leave.approve == 1) {
-                checkApprovedCardView.isChecked = true
-            }
-            else if (mode == "admin") {
-                enableCheckApprove(leaveAndType, checkChangeListener)
-            }
-
-            checkManagerCardView.isChecked = true
-        }
-
-        private fun View.enableCheckApprove(leaveAndType: LeaveAndType, checkChangeListener: (Int, Boolean) -> Unit) {
-            checkApprovedCardView.isEnabled = true
-            checkApprovedCardView.setOnCheckedChangeListener({ _, boolean ->
-                if (boolean) {
-                    leaveAndType.leave.approve = 1
-                } else {
-                    leaveAndType.leave.approve = 0
-                }
-                checkChangeListener.invoke(leaveAndType.leave.id, boolean)
-            })
-        }
-
-        @SuppressLint("SimpleDateFormat", "SetTextI18n")
-        private fun View.setGroupLeave(fromDate: Date, toDate: Date) {
-
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-            textFromDateCardView.text = "From: " + dateFormat.format(fromDate)
-            textToDateCardView.text = "To: " + dateFormat.format(toDate)
-
-            val fromCalendar = Calendar.getInstance().apply { time = fromDate }
-            val toCalendar = Calendar.getInstance().apply { time = toDate }
-
-            val diff = (toCalendar.timeInMillis - fromCalendar.timeInMillis) / (24 * 60 * 60 * 1000)
-            textTotalCardView.text = "Total : $diff Days"
-
-        }
-
-        private fun View.setTimeLate(timeLate: Int) {
-            groupLeaveCardView.visibility = View.GONE
-            timeLateCardView.visibility = View.VISIBLE
-
-            val lateString = "Time Late : ${timeLate / 60} Hour ${timeLate % 60} Minute"
-            timeLateCardView.text = lateString
         }
     }
 
