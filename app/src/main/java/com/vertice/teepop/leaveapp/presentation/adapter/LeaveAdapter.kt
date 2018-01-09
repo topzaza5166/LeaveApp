@@ -1,8 +1,6 @@
 package com.vertice.teepop.leaveapp.presentation.adapter
 
-import android.support.v7.widget.AppCompatCheckBox
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
@@ -17,17 +15,15 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
     val TAG: String = this::class.java.simpleName
 
-    var leaves: MutableList<LeaveAndType> by Delegates
+    var leaves: List<LeaveAndType> by Delegates
             .observable(ArrayList()) { _, _, _ ->
                 notifyDataSetChanged()
             }
-
-    val approved: MutableList<Boolean> by lazy {
-        leaves.map { it.leave.approve == 1 }.toMutableList()
-    }
-    var approveChange: MutableMap<Int, Int> = HashMap()
+//    var approveChange: MutableMap<Int, String> = HashMap()
 
     var mode: String = Constant.MODE_USER
+
+    var onCardViewClickListener: ((Int, Int) -> Unit)? = null
 
     override fun getItemCount(): Int {
         return leaves.size
@@ -39,38 +35,32 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
     }
 
     override fun onBindViewHolder(holder: LeaveAdapter.LeaveHolder?, position: Int) {
-        holder?.bindData(leaves[position], mode, addApproveChange, position)
-    }
-
-    private val addApproveChange: (Int, Int, Int) -> Unit = { leaveId, approve, position ->
-        Log.i(TAG, "CheckedChange at Id: $leaveId Boolean: $approve")
-        approveChange.apply {
-            if (containsKey(leaveId)) {
-                remove(leaveId)
-            } else {
-                put(leaveId, approve)
-            }
-        }
-
-        leaves[position].leave.approve = approve
+        holder?.bindData(leaves[position], mode, onCardViewClickListener, position)
     }
 
     class LeaveHolder(val binding: ListItemLeaveBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(leaveAndType: LeaveAndType, mMode: String, addApproveChange: (Int, Int, Int) -> Unit, position: Int) {
-            with(binding) {
+        val TAG: String = this::class.java.simpleName
+
+        fun bindData(leaveAndType: LeaveAndType, mMode: String, listener: ((Int, Int) -> Unit)?, position: Int) {
+            binding.cardView.setOnClickListener {
+                listener?.invoke(leaveAndType.leave.id, position)
+            }
+
+            binding.includeContentCardView?.apply {
                 item = leaveAndType
                 mode = mMode
 
-                checkApprovedCardView.setOnClickListener {
-                    if (it is AppCompatCheckBox) {
-                        addApproveChange.invoke(leaveAndType.leave.id, if (it.isChecked) 1 else 0, position)
-
-                    }
-                }
                 executePendingBindings()
             }
         }
     }
-
 }
+
+
+
+//                checkApprovedCardView2.setOnClickListener {
+//                    if (it is AppCompatCheckBox) {
+//                        addApproveChange?.invoke(leaveAndType.leave.id, it.isChecked, position)
+//                    }
+//                }

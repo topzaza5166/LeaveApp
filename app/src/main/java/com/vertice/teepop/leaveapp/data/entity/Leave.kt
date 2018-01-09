@@ -3,7 +3,12 @@ package com.vertice.teepop.leaveapp.data.entity
 import android.arch.persistence.room.*
 import com.google.gson.annotations.SerializedName
 import com.vertice.teepop.leaveapp.data.entity.converter.DateConverter
+import com.vertice.teepop.leaveapp.data.entity.converter.EmployeeConverter
+import com.vertice.teepop.leaveapp.data.entity.converter.ListApprovesConverter
+import com.vertice.teepop.leaveapp.data.model.Approved
+import com.vertice.teepop.leaveapp.data.model.Employee
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by VerDev06 on 12/27/2017.
@@ -60,6 +65,16 @@ class Leave {
     @TypeConverters(DateConverter::class)
     var createdDate: Date = Date()
 
+    @ColumnInfo(name = "userInfo")
+    @SerializedName("userInfo")
+    @TypeConverters(EmployeeConverter::class)
+    var userInfo: Employee = Employee()
+
+    @ColumnInfo(name = "approves")
+    @SerializedName("approves")
+    @TypeConverters(ListApprovesConverter::class)
+    var approves: List<Approved> = ArrayList()
+
     override fun toString(): String {
         return "ID: $id \n " +
                 "UserId: $userId \n " +
@@ -71,6 +86,8 @@ class Leave {
                 "Reason: $reason \n " +
                 "Approve $approve \n " +
                 "LeaveStatus $leaveStatus \n " +
-                "CreateDate $createdDate"
+                "CreateDate $createdDate \n" +
+                "userInfo $userInfo \n" +
+                "approves ${approves.size}"
     }
 }

@@ -52,7 +52,8 @@ class LeaveViewModel : ViewModel() {
         leaveRepo.postLeave(leave)
     }
 
-    fun postApproved(approves: List<Approved>) {
-        leaveRepo.postApprove(approves)
+    fun postApproved(approve: Approved) {
+        leaveRepo.postApprove(approve)
     }
+
 }

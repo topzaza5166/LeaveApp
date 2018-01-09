@@ -47,7 +47,8 @@
         android:visibility="gone"
         app:fabSize="normal"
         app:layout_anchor="@+id/viewPager"
-        app:layout_anchorGravity="right|bottom" />
+        app:layout_anchorGravity="right|bottom"
+        app:layout_behavior="com.vertice.teepop.leaveapp.util.ScrollAwareFABBehavior" />
 
     <!--app:layout_behavior="com.vertice.teepop.leaveapp.util.ScrollAwareFABBehavior"-->
 

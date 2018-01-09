@@ -1,10 +1,7 @@
 package com.vertice.teepop.leaveapp.data.local
 
 import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 
@@ -20,9 +17,11 @@ interface LeaveDao {
     @Query("SELECT * FROM Leave ORDER BY id DESC")
     fun getAllLeave(): LiveData<List<Leave>>
 
+    @Transaction
     @Query("SELECT * FROM Leave WHERE userId LIKE :userId ORDER BY id DESC")
     fun getLeaveByUserId(userId: Int): LiveData<List<LeaveAndType>>
 
+    @Transaction
     @Query("SELECT * FROM Leave ORDER BY id DESC")
     fun getLeaveAndType(): LiveData<List<LeaveAndType>>
 }

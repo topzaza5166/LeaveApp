@@ -84,7 +84,7 @@ class LeaveListFragment : Fragment() {
 
             it?.let {
                 Log.i(TAG, "$it")
-                leaveAdapter.leaves = it.toMutableList()
+                leaveAdapter.leaves = it
             }
         })
     }

@@ -26,6 +26,9 @@ interface LeaveApi {
     @GET("leave/user/{id}")
     fun getLeaveByUserId(@Path("id") id: Int): Single<List<Leave>>
 
+    @POST("leave/approves")
+    fun postApproves(@Body approves: List<Approved>): Single<List<Leave>>
+
     @POST("leave/approve")
-    fun postApprove(@Body approves: List<Approved>): Single<List<Leave>>
+    fun postApprove(@Body approves: Approved): Single<List<Leave>>
 }

@@ -1,6 +1,5 @@
 package com.vertice.teepop.leaveapp.presentation.activity
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -10,21 +9,16 @@ import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.orhanobut.hawk.Hawk
-import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.presentation.fragment.LeaveAdminFragment
 import com.vertice.teepop.leaveapp.presentation.fragment.LeaveFormFragment
 import com.vertice.teepop.leaveapp.presentation.fragment.LeaveListFragment
-import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 
 import com.vertice.teepop.leaveapp.util.Constant
 
 import kotlinx.android.synthetic.main.activity_leave.*
-import kotlinx.android.synthetic.main.fragment_leave_form.*
 
 
 class LeaveActivity : AppCompatActivity() {
@@ -45,7 +39,7 @@ class LeaveActivity : AppCompatActivity() {
         Log.i(TAG, employee.toString())
         supportActionBar?.title = employee.name
 
-        if (employee.role_name == "admin")
+        if (employee.roleId == 1)
             pageNum = 3
 
 //        viewModel = ViewModelProviders.of(this).get(LeaveViewModel::class.java)
@@ -59,7 +53,7 @@ class LeaveActivity : AppCompatActivity() {
 
         fabDone.setOnClickListener {
             val fragment = (viewPagerAdapter.getRegisteredFragment(2) as? LeaveAdminFragment)
-            fragment?.postApproved()
+
         }
     }
 
@@ -90,7 +84,7 @@ class LeaveActivity : AppCompatActivity() {
             return when (position) {
                 0 -> LeaveFormFragment.newInstance(employee)
                 1 -> LeaveListFragment.newInstance(employee.id)
-                2 -> LeaveAdminFragment.newInstance()
+                2 -> LeaveAdminFragment.newInstance(employee.id)
                 else -> LeaveFormFragment.newInstance(employee)
             }
         }
@@ -112,11 +106,13 @@ class LeaveActivity : AppCompatActivity() {
         }
 
         override fun onPageSelected(position: Int) {
-            if (position == 2) {
-                fabDone.show()
-            } else {
-                fabDone.hide()
-            }
+            //TODO: hide and show fab button
+//            if (position == 2) {
+//                fabDone.show()
+//            } else if (fabDone.visibility == View.VISIBLE) {
+//                fabDone.hide()
+//            } else
+//                fabDone.visibility = View.GONE
         }
 
     }

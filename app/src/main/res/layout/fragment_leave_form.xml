@@ -44,7 +44,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:visibility="visible"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                 </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
 
@@ -55,7 +55,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
                     android:visibility="visible"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                 </com.vertice.teepop.leaveapp.presentation.view.DateFromView>
 
@@ -72,19 +72,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Time Late : " />
+                        android:text="@string/time_late"
+                        android:textColor="@android:color/black" />
 
                     <TextView
                         android:id="@+id/textTimeLate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
                         android:text="0.00"
                         android:textColor="@android:color/holo_red_light" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Minute" />
+                        android:text="@string/minute"
+                        android:textColor="@android:color/black" />
 
                     <View
                         android:layout_width="0dp"
@@ -95,10 +99,35 @@
                         android:id="@+id/buttonTimeLate"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
-                        android:text="Change"
+                        android:text="@string/change"
                         android:textSize="12sp" />
 
                 </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/radioEarlyGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <RadioButton
+                        android:id="@+id/radioMorning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:checked="true"
+                        android:text="@string/morning" />
+
+                    <RadioButton
+                        android:id="@+id/radioAfternoon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/afternoon" />
+
+                </RadioGroup>
 
 
                 <android.support.design.widget.TextInputLayout

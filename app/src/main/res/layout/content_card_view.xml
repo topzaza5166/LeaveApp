@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="java.util.List" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.vertice.teepop.leaveapp.data.model.LeaveAndType" />
+
+        <variable
+            name="mode"
+            type="String" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textTypeLeaveCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.type.get(0).typeName}"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                tool:text="Sick leave" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textLeaveDateCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.leave.createdDate}"
+                android:textSize="12sp"
+                tool:text="21/02/2538" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:id="@+id/groupLeaveCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="@{item.type.get(0).typeName != `Late arrival` ? View.VISIBLE  : View.GONE}">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="From: " />
+
+                    <TextView
+                        android:id="@+id/textFromDateCardView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.leave.fromDate}"
+                        tool:text="21/02/1995" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" - To: " />
+
+                    <TextView
+                        android:id="@+id/textToDateCardView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{item.leave.toDate}"
+                        tool:text="/21/02/1995" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textTotalCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@{item.dateDifferent()}"
+                    tool:text="Total : 4 Days" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/timeLateCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{item.formatTimeLate()}"
+                android:visibility="@{item.type.get(0).typeName == `Late arrival` ? View.VISIBLE  : View.GONE}"
+                tool:text="Time Late : 0 Hour 0 Minute" />
+
+            <TextView
+                android:id="@+id/textReasonCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{`Reason : ` + item.leave.reason}"
+                tool:text="Reason : Over Sleep" />
+
+            <TextView
+                android:id="@+id/textUserCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:text="@{item.leave.userInfo.name}"
+                android:textColor="@android:color/black"
+                android:visibility="@{mode == `admin` ? View.VISIBLE : View.GONE}"
+                tool:text="Teepop Ruamtong" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkApprovedCardView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{item.leave.approve &lt; 2 ? false : true}"
+                    android:enabled="false"
+                    android:text="@string/approved" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkApprovedCardView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{item.leave.approve &lt; 1 ? false : true}"
+                    android:enabled="false"
+                    android:text="@string/approved" />
+
+                <!--android:enabled="@{mode == `admin` ? true : false }"-->
+                <!--android:enabled="@{mode == `admin` &amp;&amp; item.leave.approve &lt; 2 ? true : false }"-->
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

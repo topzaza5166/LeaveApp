@@ -15,7 +15,7 @@ import com.vertice.teepop.leaveapp.data.model.Approved
 import com.vertice.teepop.leaveapp.presentation.adapter.LeaveAdapter
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
+import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_USER_ID
 
 import kotlinx.android.synthetic.main.fragment_leave_admin.*
 
@@ -27,6 +27,7 @@ class LeaveAdminFragment : Fragment() {
     val TAG: String = this::class.java.simpleName
 
     var leaveAdapter = LeaveAdapter()
+    var adminId: Int = 0
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(LeaveViewModel::class.java).also {
@@ -54,11 +55,17 @@ class LeaveAdminFragment : Fragment() {
 
     private fun init(savedInstanceState: Bundle?) {
         // Init Fragment level's variable(s) here
+        arguments?.run {
+            adminId = getInt(KEY_ARG_USER_ID)
+        }
     }
 
     private fun initInstances(rootView: View, savedInstanceState: Bundle?) {
         // Init 'View' instance(s) with rootView.findViewById here
         leaveAdapter.mode = Constant.MODE_ADMIN
+        leaveAdapter.onCardViewClickListener = { leaveId, position ->
+
+        }
 
         getLeave()
 
@@ -73,13 +80,6 @@ class LeaveAdminFragment : Fragment() {
             leaveRecyclerView.invalidate()
         }
 
-    }
-
-    fun postApproved() {
-        viewModel.postApproved(leaveAdapter.approveChange.map { Approved(it.key, it.value) })
-        Log.i(TAG, "ApproveChange ${leaveAdapter.approveChange}")
-
-        leaveAdapter.approveChange.clear()
     }
 
     override fun onStart() {
@@ -112,18 +112,18 @@ class LeaveAdminFragment : Fragment() {
                 swipeRefreshLayout.isRefreshing = false
 
             it?.let {
-                Log.i(TAG, "Leave is Changed ${it.size}")
-                leaveAdapter.leaves = it.toMutableList()
+                leaveAdapter.leaves = it
+                Log.i(TAG, "Leave is Changed $it")
             }
         })
     }
 
     companion object {
 
-        fun newInstance(): LeaveAdminFragment {
+        fun newInstance(id: Int): LeaveAdminFragment {
             return LeaveAdminFragment().apply {
                 arguments = Bundle().apply {
-
+                    putInt(KEY_ARG_USER_ID, id)
                 }
             }
         }

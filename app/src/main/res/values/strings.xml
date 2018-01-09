@@ -23,4 +23,9 @@
     <string name="to">To</string>
     <string name="manager">Manager</string>
     <string name="approved">Approved</string>
+    <string name="time_late">Time Late :</string>
+    <string name="minute">Minute</string>
+    <string name="change">Change</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
 </resources>

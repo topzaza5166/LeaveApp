@@ -5,7 +5,6 @@ import android.app.TimePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -162,6 +161,11 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     }
 
     private fun sendLeave() {
+
+        if (typeList?.get(spinnerType.selectedItemPosition)?.typeName.equals("Early leave")) {
+            Toast.makeText(context, "Early Morning ${radioMorning.isChecked} \nEarly Afternoon ${radioAfternoon.isChecked}", Toast.LENGTH_SHORT).show()
+        }
+
         val leave = Leave().apply {
             userId = employee.id
             typeId = typeList?.get(spinnerType.selectedItemPosition)?.id ?: 0
@@ -176,16 +180,31 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         viewModel.postLeave(leave)
     }
 
-    private fun toggleView() {
+    private fun setToFromVisibility(vis: Int) {
         toView.apply {
-            visibility = if (visibility == View.GONE) View.VISIBLE else View.GONE
+            visibility = vis
         }
         fromView.apply {
-            visibility = if (visibility == View.GONE) View.VISIBLE else View.GONE
+            visibility = vis
         }
 
-        layoutTimeLate.apply {
-            visibility = if (visibility == View.GONE) View.VISIBLE else View.GONE
+    }
+
+    private fun setTimeLateEarlyGroupVisibility(mode: String) {
+        when (mode) {
+            "Late arrival" -> {
+                radioEarlyGroup.visibility = View.GONE
+                layoutTimeLate.visibility = View.VISIBLE
+            }
+            "Early leave" -> {
+                radioEarlyGroup.visibility = View.VISIBLE
+                layoutTimeLate.visibility = View.GONE
+            }
+            else -> {
+                radioEarlyGroup.visibility = View.GONE
+                layoutTimeLate.visibility = View.GONE
+            }
+
         }
     }
 
@@ -205,9 +224,15 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             if (typeList?.get(spinnerType.selectedItemPosition)?.typeName.equals("Late arrival")
                     && layoutTimeLate.visibility == View.GONE) {
-                toggleView()
-            } else if (layoutTimeLate.visibility == View.VISIBLE) {
-                toggleView()
+                setToFromVisibility(View.GONE)
+                setTimeLateEarlyGroupVisibility("Late arrival")
+            } else if (typeList?.get(spinnerType.selectedItemPosition)?.typeName.equals("Early leave")
+                    && radioEarlyGroup.visibility == View.GONE) {
+                setToFromVisibility(View.GONE)
+                setTimeLateEarlyGroupVisibility("Early leave")
+            } else if (layoutTimeLate.visibility == View.VISIBLE || radioEarlyGroup.visibility == View.VISIBLE) {
+                setToFromVisibility(View.VISIBLE)
+                setTimeLateEarlyGroupVisibility("")
             }
         }
     }

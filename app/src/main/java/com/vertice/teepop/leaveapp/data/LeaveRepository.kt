@@ -22,5 +22,7 @@ interface LeaveRepository {
 
     fun getAllLeaveAndType(): LiveData<List<LeaveAndType>>
 
-    fun postApprove(approves: List<Approved>)
+    fun postApproves(approves: List<Approved>)
+
+    fun postApprove(approve: Approved)
 }

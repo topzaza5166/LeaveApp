@@ -70,8 +70,17 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
         return typeLeaveDao.getAllType()
     }
 
-    override fun postApprove(approves: List<Approved>) {
-        serviceApi.postApprove(approves)
+    override fun postApproves(approves: List<Approved>) {
+        serviceApi.postApproves(approves)
+                .subscribeOn(scheduler)
+                .subscribe(
+                        { response -> response?.let { leaveDao.insertOrUpdateLeave(*response.toTypedArray()) } },
+                        { error -> Log.e(TAG, error?.toString()) }
+                )
+    }
+
+    override fun postApprove(approve: Approved) {
+        serviceApi.postApprove(approve)
                 .subscribeOn(scheduler)
                 .subscribe(
                         { response -> response?.let { leaveDao.insertOrUpdateLeave(*response.toTypedArray()) } },
