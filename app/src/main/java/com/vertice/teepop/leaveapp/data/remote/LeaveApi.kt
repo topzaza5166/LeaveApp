@@ -30,5 +30,5 @@ interface LeaveApi {
     fun postApproves(@Body approves: List<Approved>): Single<List<Leave>>
 
     @POST("leave/approve")
-    fun postApprove(@Body approves: Approved): Single<List<Leave>>
+    fun postApprove(@Body approves: Approved): Single<Leave>
 }

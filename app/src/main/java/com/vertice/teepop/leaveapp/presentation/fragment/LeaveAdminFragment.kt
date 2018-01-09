@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.model.Approved
@@ -16,8 +17,12 @@ import com.vertice.teepop.leaveapp.presentation.adapter.LeaveAdapter
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_USER_ID
+import com.vertice.teepop.leaveapp.util.bus.ApproveMessageEvent
 
 import kotlinx.android.synthetic.main.fragment_leave_admin.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by nuuneoi on 11/16/2014.
@@ -63,8 +68,10 @@ class LeaveAdminFragment : Fragment() {
     private fun initInstances(rootView: View, savedInstanceState: Bundle?) {
         // Init 'View' instance(s) with rootView.findViewById here
         leaveAdapter.mode = Constant.MODE_ADMIN
-        leaveAdapter.onCardViewClickListener = { leaveId, position ->
-
+        leaveAdapter.onCardViewClickListener = { leave, _ ->
+            LeaveDialogFragment
+                    .newInstance(leave, "admin")
+                    .show(childFragmentManager, LeaveDialogFragment::class.java.simpleName)
         }
 
         getLeave()
@@ -84,10 +91,12 @@ class LeaveAdminFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
         super.onStop()
+        EventBus.getDefault().unregister(this)
     }
 
     /*
@@ -116,6 +125,16 @@ class LeaveAdminFragment : Fragment() {
                 Log.i(TAG, "Leave is Changed $it")
             }
         })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onApproveListener(message: ApproveMessageEvent) {
+        viewModel.postApproved(Approved(
+                adminId = this.adminId,
+                leaveId = message.leaveId,
+                comment = message.comment)
+        )
+        Toast.makeText(context, "Send Your Approved", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

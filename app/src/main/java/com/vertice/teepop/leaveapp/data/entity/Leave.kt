@@ -32,17 +32,17 @@ class Leave {
     @ColumnInfo(name = "leaveDate")
     @SerializedName("leaveDate")
     @TypeConverters(DateConverter::class)
-    lateinit var leaveDate: Date
+    var leaveDate: Date = Date()
 
     @ColumnInfo(name = "fromDate")
     @SerializedName("fromDate")
     @TypeConverters(DateConverter::class)
-    lateinit var fromDate: Date
+    var fromDate: Date = Date()
 
     @ColumnInfo(name = "toDate")
     @SerializedName("toDate")
     @TypeConverters(DateConverter::class)
-    lateinit var toDate: Date
+    var toDate: Date = Date()
 
     @ColumnInfo(name = "timeLate")
     @SerializedName("timeLate")
@@ -50,7 +50,7 @@ class Leave {
 
     @ColumnInfo(name = "reason")
     @SerializedName("reason")
-    lateinit var reason: String
+    var reason: String = ""
 
     @ColumnInfo(name = "approve")
     @SerializedName("approve")

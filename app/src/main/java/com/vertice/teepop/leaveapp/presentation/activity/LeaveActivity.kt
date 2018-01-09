@@ -1,5 +1,6 @@
 package com.vertice.teepop.leaveapp.presentation.activity
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -7,17 +8,16 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.util.SparseArray
-import android.view.View
 import android.view.ViewGroup
 import com.orhanobut.hawk.Hawk
+import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.presentation.fragment.LeaveAdminFragment
 import com.vertice.teepop.leaveapp.presentation.fragment.LeaveFormFragment
 import com.vertice.teepop.leaveapp.presentation.fragment.LeaveListFragment
-
+import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant
-
 import kotlinx.android.synthetic.main.activity_leave.*
 
 
@@ -29,7 +29,7 @@ class LeaveActivity : AppCompatActivity() {
 
     var pageNum: Int = 2
 
-//    lateinit var viewModel: LeaveViewModel
+    lateinit var viewModel: LeaveViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +42,10 @@ class LeaveActivity : AppCompatActivity() {
         if (employee.roleId == 1)
             pageNum = 3
 
-//        viewModel = ViewModelProviders.of(this).get(LeaveViewModel::class.java)
-//        viewModel.also {
-//            LeaveApplication.component.inject(it)
-//        }
+        viewModel = ViewModelProviders.of(this).get(LeaveViewModel::class.java)
+        viewModel.also {
+            LeaveApplication.component.inject(it)
+        }
 
         viewPager.adapter = viewPagerAdapter
         viewPager.addOnPageChangeListener(onPageChangeListener)

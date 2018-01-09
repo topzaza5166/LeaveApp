@@ -36,9 +36,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     var typeList: List<TypeLeave>? = null
 
     private val viewModel by lazy {
-        ViewModelProviders.of(activity!!).get(LeaveViewModel::class.java).also {
-            LeaveApplication.component.inject(it)
-        }
+        ViewModelProviders.of(activity!!).get(LeaveViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

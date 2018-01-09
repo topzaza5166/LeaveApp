@@ -9,13 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.presentation.adapter.LeaveAdapter
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_USER_ID
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import kotlinx.android.synthetic.main.fragment_leave_list.*
+
 
 /**
  * Created by nuuneoi on 11/16/2014.
@@ -28,9 +27,7 @@ class LeaveListFragment : Fragment() {
     var userId: Int = 0
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(LeaveViewModel::class.java).also {
-            LeaveApplication.component.inject(it)
-        }
+        ViewModelProviders.of(activity!!).get(LeaveViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +59,11 @@ class LeaveListFragment : Fragment() {
     private fun initInstances(rootView: View, savedInstanceState: Bundle?) {
         // Init 'View' instance(s) with rootView.findViewById here
         getLeave()
+        leaveAdapter.onCardViewClickListener = { leave, _ ->
+            LeaveDialogFragment
+                    .newInstance(leave, "user")
+                    .show(childFragmentManager, LeaveDialogFragment::class.java.simpleName)
+        }
 
         val mLayoutManager = LinearLayoutManager(context)
         leaveRecyclerView.apply {

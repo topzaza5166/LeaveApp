@@ -23,7 +23,7 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
     var mode: String = Constant.MODE_USER
 
-    var onCardViewClickListener: ((Int, Int) -> Unit)? = null
+    var onCardViewClickListener: ((LeaveAndType, Int) -> Unit)? = null
 
     override fun getItemCount(): Int {
         return leaves.size
@@ -42,9 +42,9 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
 
         val TAG: String = this::class.java.simpleName
 
-        fun bindData(leaveAndType: LeaveAndType, mMode: String, listener: ((Int, Int) -> Unit)?, position: Int) {
+        fun bindData(leaveAndType: LeaveAndType, mMode: String, listener: ((LeaveAndType, Int) -> Unit)?, position: Int) {
             binding.cardView.setOnClickListener {
-                listener?.invoke(leaveAndType.leave.id, position)
+                listener?.invoke(leaveAndType, position)
             }
 
             binding.includeContentCardView?.apply {
@@ -56,7 +56,6 @@ class LeaveAdapter : RecyclerView.Adapter<LeaveAdapter.LeaveHolder>() {
         }
     }
 }
-
 
 
 //                checkApprovedCardView2.setOnClickListener {

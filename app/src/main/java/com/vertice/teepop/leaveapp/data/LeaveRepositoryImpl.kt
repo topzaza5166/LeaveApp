@@ -83,7 +83,7 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
         serviceApi.postApprove(approve)
                 .subscribeOn(scheduler)
                 .subscribe(
-                        { response -> response?.let { leaveDao.insertOrUpdateLeave(*response.toTypedArray()) } },
+                        { response -> response?.let { leaveDao.insertOrUpdateLeave(response) } },
                         { error -> Log.e(TAG, error?.toString()) }
                 )
     }

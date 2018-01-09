@@ -1,16 +1,21 @@
 package com.vertice.teepop.leaveapp.data.model
 
+import android.annotation.SuppressLint
 import android.arch.persistence.room.*
+import android.os.Parcelable
 
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
+import kotlinx.android.parcel.Parcelize
 
 import java.util.*
 
 /**
  * Created by topza on 12/27/2017.
  */
-class LeaveAndType {
+@SuppressLint("ParcelCreator")
+@Parcelize
+class LeaveAndType : Parcelable {
 
     @Embedded
     lateinit var leave: Leave
