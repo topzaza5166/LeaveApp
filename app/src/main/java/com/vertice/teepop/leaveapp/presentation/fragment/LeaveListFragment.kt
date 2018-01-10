@@ -73,8 +73,7 @@ class LeaveListFragment : Fragment() {
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            getLeave()
-            leaveRecyclerView.invalidate()
+            viewModel.reloadLeave()
         }
     }
 
@@ -86,7 +85,7 @@ class LeaveListFragment : Fragment() {
 
             it?.let {
                 Log.i(TAG, "$it")
-                leaveAdapter.leaves = it
+                leaveAdapter.setList(it)
             }
         })
     }

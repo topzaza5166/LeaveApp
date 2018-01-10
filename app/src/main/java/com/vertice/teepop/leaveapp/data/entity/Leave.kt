@@ -68,7 +68,7 @@ class Leave {
     @ColumnInfo(name = "userInfo")
     @SerializedName("userInfo")
     @TypeConverters(EmployeeConverter::class)
-    var userInfo: Employee = Employee()
+    var userInfo: Employee? = null
 
     @ColumnInfo(name = "approves")
     @SerializedName("approves")

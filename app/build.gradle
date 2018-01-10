@@ -70,15 +70,12 @@ dependencies {
     implementation 'com.orhanobut:hawk:2.0.1'
     //event bus
     implementation 'org.greenrobot:eventbus:3.1.1'
-
-    implementation "com.android.support:support-compat:$supportLibVersion"
-    implementation 'com.daimajia.easing:library:2.0@aar'
-    implementation 'com.daimajia.androidanimations:library:2.3@aar'
-
-    implementation 'jp.wasabeef:recyclerview-animators:2.2.7'
+    //paging
+    implementation "android.arch.paging:runtime:1.0.0-alpha4-1"
 
     kapt 'com.android.databinding:compiler:3.0.1'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    //lottie
+    implementation 'com.airbnb.android:lottie:2.5.0-beta2'
 }

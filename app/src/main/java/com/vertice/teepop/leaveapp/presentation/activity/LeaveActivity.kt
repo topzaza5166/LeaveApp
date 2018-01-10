@@ -18,7 +18,9 @@ import com.vertice.teepop.leaveapp.presentation.fragment.LeaveFormFragment
 import com.vertice.teepop.leaveapp.presentation.fragment.LeaveListFragment
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant
+import com.vertice.teepop.leaveapp.util.bus.SendMessageEvent
 import kotlinx.android.synthetic.main.activity_leave.*
+import org.greenrobot.eventbus.EventBus
 
 
 class LeaveActivity : AppCompatActivity() {
@@ -52,8 +54,8 @@ class LeaveActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
 
         fabDone.setOnClickListener {
-            val fragment = (viewPagerAdapter.getRegisteredFragment(2) as? LeaveAdminFragment)
-
+            //            val fragment = (viewPagerAdapter.getRegisteredFragment(2) as? LeaveAdminFragment)
+            EventBus.getDefault().post(SendMessageEvent())
         }
     }
 
@@ -106,6 +108,10 @@ class LeaveActivity : AppCompatActivity() {
         }
 
         override fun onPageSelected(position: Int) {
+            if (position == 0) {
+                fabDone.show()
+            } else fabDone.hide()
+
             //TODO: hide and show fab button
 //            if (position == 2) {
 //                fabDone.show()

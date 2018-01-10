@@ -1,6 +1,7 @@
 package com.vertice.teepop.leaveapp.data.local
 
 import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import android.arch.persistence.room.*
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
@@ -19,9 +20,9 @@ interface LeaveDao {
 
     @Transaction
     @Query("SELECT * FROM Leave WHERE userId LIKE :userId ORDER BY id DESC")
-    fun getLeaveByUserId(userId: Int): LiveData<List<LeaveAndType>>
+    fun getLeaveByUserId(userId: Int): DataSource.Factory<Int, LeaveAndType>
 
     @Transaction
     @Query("SELECT * FROM Leave ORDER BY id DESC")
-    fun getLeaveAndType(): LiveData<List<LeaveAndType>>
+    fun getLeaveAndType(): DataSource.Factory<Int, LeaveAndType>
 }

@@ -3,6 +3,7 @@ package com.vertice.teepop.leaveapp.data.remote
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.model.Approved
+import com.vertice.teepop.leaveapp.data.model.Employee
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET

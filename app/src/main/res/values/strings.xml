@@ -28,4 +28,5 @@
     <string name="change">Change</string>
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
+    <string name="comment">Comment</string>
 </resources>

@@ -2,6 +2,7 @@ package com.vertice.teepop.leaveapp.data.dependency
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.vertice.teepop.leaveapp.data.remote.EmployeeApi
 import com.vertice.teepop.leaveapp.data.remote.LeaveApi
 import com.vertice.teepop.leaveapp.data.remote.LoginApi
 import dagger.Module
@@ -52,10 +53,13 @@ class RemoteDataModule(val baseUrl: String) {
     @Singleton
     fun provideLoginApi(retrofit: Retrofit): LoginApi =
             retrofit.create(LoginApi::class.java)
-
     @Provides
     @Singleton
     fun provideLeaveApi(retrofit: Retrofit): LeaveApi =
             retrofit.create(LeaveApi::class.java)
+    @Provides
+    @Singleton
+    fun provideEmployeeApi(retrofit: Retrofit): EmployeeApi =
+            retrofit.create(EmployeeApi::class.java)
 
 }

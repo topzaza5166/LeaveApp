@@ -1,12 +1,14 @@
 package com.vertice.teepop.leaveapp.data
 
 import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import android.util.Log
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.local.LeaveDao
 import com.vertice.teepop.leaveapp.data.local.TypeLeaveDao
 import com.vertice.teepop.leaveapp.data.model.Approved
+import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 import com.vertice.teepop.leaveapp.data.remote.LeaveApi
 import io.reactivex.Scheduler
@@ -21,7 +23,7 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
 
     val TAG: String = LeaveRepositoryImpl::class.java.simpleName
 
-    override fun getAllLeaveAndType(): LiveData<List<LeaveAndType>> {
+    override fun getAllLeaveAndType(): DataSource.Factory<Int, LeaveAndType> {
         serviceApi.getAllLeave()
                 .subscribeOn(scheduler)
                 .subscribe({ leaves, _ ->
@@ -39,7 +41,7 @@ class LeaveRepositoryImpl(val serviceApi: LeaveApi,
         return leaveDao.getAllLeave()
     }
 
-    override fun getLeaveByUserId(id: Int): LiveData<List<LeaveAndType>> {
+    override fun getLeaveByUserId(id: Int): DataSource.Factory<Int, LeaveAndType> {
         Log.i(TAG, "id = $id")
         serviceApi.getLeaveByUserId(id)
                 .subscribeOn(scheduler)

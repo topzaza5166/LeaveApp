@@ -1,5 +1,6 @@
 package com.vertice.teepop.leaveapp.presentation.fragment
 
+import android.animation.Animator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.airbnb.lottie.LottieAnimationView
 import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.model.Approved
@@ -83,8 +85,27 @@ class LeaveAdminFragment : Fragment() {
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            getLeave()
-            leaveRecyclerView.invalidate()
+            viewModel.reloadLeave()
+        }
+
+        animationView.apply {
+            speed = 0.5F
+            addAnimatorListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(p0: Animator?) {
+                }
+
+                override fun onAnimationEnd(p0: Animator?) {
+                    visibility = View.GONE
+                }
+
+                override fun onAnimationCancel(p0: Animator?) {
+                    visibility = View.GONE
+                }
+
+                override fun onAnimationStart(p0: Animator?) {
+                }
+
+            })
         }
 
     }
@@ -121,7 +142,7 @@ class LeaveAdminFragment : Fragment() {
                 swipeRefreshLayout.isRefreshing = false
 
             it?.let {
-                leaveAdapter.leaves = it
+                leaveAdapter.setList(it)
                 Log.i(TAG, "Leave is Changed $it")
             }
         })
@@ -134,7 +155,11 @@ class LeaveAdminFragment : Fragment() {
                 leaveId = message.leaveId,
                 comment = message.comment)
         )
-        Toast.makeText(context, "Send Your Approved", Toast.LENGTH_SHORT).show()
+        animationView.apply {
+            visibility = View.VISIBLE
+            playAnimation()
+        }
+//        Toast.makeText(context, "Send Your Approved", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

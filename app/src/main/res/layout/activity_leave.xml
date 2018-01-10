@@ -24,6 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     </android.support.design.widget.AppBarLayout>
@@ -43,8 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_done"
-        android:visibility="gone"
+        android:src="@drawable/ic_send"
+        android:visibility="visible"
         app:fabSize="normal"
         app:layout_anchor="@+id/viewPager"
         app:layout_anchorGravity="right|bottom"

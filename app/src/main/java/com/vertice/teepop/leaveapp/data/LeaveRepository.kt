@@ -1,9 +1,11 @@
 package com.vertice.teepop.leaveapp.data
 
 import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.model.Approved
+import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 
 
@@ -18,11 +20,12 @@ interface LeaveRepository {
 
     fun getAllLeave(): LiveData<List<Leave>>
 
-    fun getLeaveByUserId(id: Int): LiveData<List<LeaveAndType>>
+    fun getLeaveByUserId(id: Int): DataSource.Factory<Int, LeaveAndType>
 
-    fun getAllLeaveAndType(): LiveData<List<LeaveAndType>>
+    fun getAllLeaveAndType(): DataSource.Factory<Int, LeaveAndType>
 
     fun postApproves(approves: List<Approved>)
 
     fun postApprove(approve: Approved)
+
 }

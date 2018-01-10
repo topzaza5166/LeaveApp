@@ -2,11 +2,17 @@ package com.vertice.teepop.leaveapp.presentation.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
+import android.util.Log
 import com.vertice.teepop.leaveapp.data.LeaveRepository
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.model.Approved
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
+import com.vertice.teepop.leaveapp.data.remote.EmployeeApi
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -19,13 +25,8 @@ class LeaveViewModel : ViewModel() {
     @Inject
     lateinit var leaveRepo: LeaveRepository
 
-    private var leave: LiveData<List<Leave>>? = null
-
     private var types: LiveData<List<TypeLeave>>? = null
-
-//    private var leaveAll : LiveData<List<LeaveAndType>>? = null
-
-    private var leaveAndType: LiveData<List<LeaveAndType>>? = null
+    private var leaveAndType: LiveData<PagedList<LeaveAndType>>? = null
 
     fun getAllType(): LiveData<List<TypeLeave>> {
         // This is a simple way to cache data. You could cache it in db instead.
@@ -33,18 +34,13 @@ class LeaveViewModel : ViewModel() {
         return types!!
     }
 
-    fun getAllLeave(): LiveData<List<Leave>> {
-        leave = leave ?: leaveRepo.getAllLeave()
-        return leave!!
-    }
-
-    fun getLeaveAndType(): LiveData<List<LeaveAndType>> {
-        leaveAndType = leaveAndType ?: leaveRepo.getAllLeaveAndType()
+    fun getLeaveAndType(): LiveData<PagedList<LeaveAndType>> {
+        leaveAndType = leaveAndType ?: LivePagedListBuilder<Int, LeaveAndType>(leaveRepo.getAllLeaveAndType(), 20).build()
         return leaveAndType!!
     }
 
-    fun getLeaveByUserId(id: Int): LiveData<List<LeaveAndType>> {
-        leaveAndType = leaveAndType ?: leaveRepo.getLeaveByUserId(id)
+    fun getLeaveByUserId(id: Int): LiveData<PagedList<LeaveAndType>> {
+        leaveAndType = leaveAndType ?: LivePagedListBuilder<Int, LeaveAndType>(leaveRepo.getLeaveByUserId(id), 20).build()
         return leaveAndType!!
     }
 
@@ -54,6 +50,10 @@ class LeaveViewModel : ViewModel() {
 
     fun postApproved(approve: Approved) {
         leaveRepo.postApprove(approve)
+    }
+
+    fun reloadLeave() {
+        leaveAndType = LivePagedListBuilder<Int, LeaveAndType>(leaveRepo.getAllLeaveAndType(), 20).build()
     }
 
 }

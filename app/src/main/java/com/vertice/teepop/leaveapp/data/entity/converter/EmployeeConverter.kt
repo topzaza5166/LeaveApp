@@ -11,11 +11,17 @@ class EmployeeConverter {
 
     @TypeConverter
     fun toEmployee(json: String?): Employee? {
-        return Gson().fromJson(json, Employee::class.java)
+        json?.let {
+            return Gson().fromJson(it, Employee::class.java)
+        }
+        return Employee()
     }
 
     @TypeConverter
     fun toJsonSchema(employee: Employee?): String? {
-        return Gson().toJson(employee)
+        employee?.let {
+            return Gson().toJson(it)
+        }
+        return ""
     }
 }

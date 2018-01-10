@@ -10,17 +10,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import com.vertice.teepop.leaveapp.LeaveApplication
+import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
+import com.vertice.teepop.leaveapp.data.remote.EmployeeApi
+import com.vertice.teepop.leaveapp.data.remote.LoginApi
 import com.vertice.teepop.leaveapp.databinding.DialogFragmentLeaveBinding
 import com.vertice.teepop.leaveapp.databinding.ContentCardViewBinding
 import com.vertice.teepop.leaveapp.util.bus.ApproveMessageEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
+import javax.inject.Inject
 
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 class LeaveDialogFragment : DialogFragment() {
+
+    @Inject
+    lateinit var employeeApi: EmployeeApi
 
     val TAG: String = this::class.java.simpleName
 
@@ -35,6 +45,8 @@ class LeaveDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LeaveApplication.component.inject(this)
+
         init(savedInstanceState)
 
         savedInstanceState?.let {
@@ -63,17 +75,36 @@ class LeaveDialogFragment : DialogFragment() {
 
     private fun initInstances(rootView: View, savedInstanceState: Bundle?) {
         // Init 'View' instance(s) with rootView.findViewById here
-        binding.apply {
-            approved1 = mLeave.leave.approves.getOrNull(0)
-            approved2 = mLeave.leave.approves.getOrNull(1)
-        }
-
         binding.includeContentCardView?.apply {
             item = mLeave
             mode = mMode
             if (mMode == "admin") {
                 enableApprove()
             }
+        }
+
+        mLeave.leave.approves.getOrNull(0)?.let {
+            binding.approved1 = it
+            employeeApi.getEmployeeById(it.adminId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { employee, _ ->
+                        employee?.apply {
+                            binding.textApprovedAdmin.text = name
+                        }
+                    }
+        }
+
+        mLeave.leave.approves.getOrNull(1)?.let {
+            binding.approved2 = it
+            employeeApi.getEmployeeById(it.adminId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { employee, _ ->
+                        employee?.apply {
+                            binding.textApprovedAdmin2.text = name
+                        }
+                    }
         }
     }
 
@@ -94,15 +125,16 @@ class LeaveDialogFragment : DialogFragment() {
     }
 
     private fun AppCompatCheckBox.showInputDialog(appCompatCheckBox: AppCompatCheckBox) {
-        val edit = EditText(context)
+        val viewInflated: View = LayoutInflater.from(context).inflate(R.layout.dialog_input, view as ViewGroup, false)
+        val input: EditText = viewInflated.findViewById(R.id.input)
         AlertDialog.Builder(activity!!)
-                .setView(edit)
+                .setView(viewInflated)
                 .setMessage("Please input comment")
                 .setPositiveButton("Approve", { _, _ ->
                     EventBus.getDefault().post(ApproveMessageEvent(
-                            leaveId = mLeave.leave.id, comment = edit.text.toString()
+                            leaveId = mLeave.leave.id, comment = input.text.toString()
                     ))
-                    Log.i(TAG, edit.text.toString())
+                    Log.i(TAG, input.text.toString())
                     this@LeaveDialogFragment.dismiss()
                 })
                 .setNegativeButton("Cancel", { dialog, _ ->

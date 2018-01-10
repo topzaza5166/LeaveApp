@@ -5,6 +5,7 @@ import com.vertice.teepop.leaveapp.data.dependency.LocalDataModule
 import com.vertice.teepop.leaveapp.data.dependency.RemoteDataModule
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.presentation.activity.LoginActivity
+import com.vertice.teepop.leaveapp.presentation.fragment.LeaveDialogFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -23,6 +24,8 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(loginActivity: LoginActivity)
-//    fun inject(leaveActivity: LeaveActivity)
+    //    fun inject(leaveActivity: LeaveActivity)
     fun inject(leaveViewModel: LeaveViewModel)
+
+    fun inject(leaveDialogFragment: LeaveDialogFragment)
 }

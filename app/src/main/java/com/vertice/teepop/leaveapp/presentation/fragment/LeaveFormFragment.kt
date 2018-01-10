@@ -19,8 +19,11 @@ import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_EMPLOYEE
+import com.vertice.teepop.leaveapp.util.bus.SendMessageEvent
 import kotlinx.android.synthetic.main.fragment_leave_form.*
 import kotlinx.android.synthetic.main.view_date_form.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
 /**
@@ -69,20 +72,22 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         setDatePicker()
         setTimePicker()
 
-        fab.setOnClickListener {
-            sendLeave()
-            editReason.setText("")
-
-            Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
-        }
+//        fab.setOnClickListener {
+//            sendLeave()
+//            editReason.setText("")
+//
+//            Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     override fun onStart() {
         super.onStart()
+        EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
         super.onStop()
+        EventBus.getDefault().unregister(this)
     }
 
     /*
@@ -156,6 +161,14 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         }
 
         return DatePickerDialog(context, listener, 0, 0, 0)
+    }
+
+    @Subscribe
+    fun onClickFloatingButton(massage: SendMessageEvent) {
+        sendLeave()
+        editReason.setText("")
+
+        Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
     }
 
     private fun sendLeave() {

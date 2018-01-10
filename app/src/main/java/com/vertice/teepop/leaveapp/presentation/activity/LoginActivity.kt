@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.orhanobut.hawk.Hawk
 import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
@@ -74,19 +72,11 @@ class LoginActivity : AppCompatActivity() {
     private fun showPasswordError() {
         passInputLayout.isErrorEnabled = true
         passInputLayout.error = "Password can't be null"
-
-        YoYo.with(Techniques.Shake)
-                .duration(500)
-                .playOn(passInputLayout)
     }
 
     private fun showUsernameError() {
         userInputLayout.isErrorEnabled = true
         userInputLayout.error = "Username can't be null"
-
-        YoYo.with(Techniques.Shake)
-                .duration(500)
-                .playOn(userInputLayout)
     }
 
     override fun onStart() {
