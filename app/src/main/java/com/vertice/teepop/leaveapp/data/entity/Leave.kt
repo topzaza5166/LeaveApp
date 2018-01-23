@@ -19,11 +19,11 @@ class Leave {
     @PrimaryKey
     @ColumnInfo(name = "id")
     @SerializedName("id")
-    var id: Int = 0
+    var id: Long = 0
 
     @ColumnInfo(name = "userId")
     @SerializedName("userId")
-    var userId: Int = 0
+    var userId: Long = 0
 
     @ColumnInfo(name = "typeId")
     @SerializedName("typeId")
@@ -64,6 +64,10 @@ class Leave {
     @SerializedName("createdDate")
     @TypeConverters(DateConverter::class)
     var createdDate: Date = Date()
+
+    @ColumnInfo(name = "leaveDays")
+    @SerializedName("leaveDays")
+    var leaveDays: Int = 0
 
     @ColumnInfo(name = "userInfo")
     @SerializedName("userInfo")

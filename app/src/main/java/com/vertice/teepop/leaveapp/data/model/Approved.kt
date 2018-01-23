@@ -7,9 +7,9 @@ import java.util.*
 /**
  * Created by VerDev06 on 12/29/2017.
  */
-data class Approved(var id: Int = 0,
-                    var leaveId: Int = 0,
-                    var adminId: Int = 0,
+data class Approved(var id: Long = 0,
+                    var leaveId: Long = 0,
+                    var adminId: Long = 0,
                     var comment: String? = null,
                     var createdDate: Date = Date()) {
 

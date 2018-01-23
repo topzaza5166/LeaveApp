@@ -11,15 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.google.gson.Gson
-import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 import com.vertice.teepop.leaveapp.data.model.Employee
 import com.vertice.teepop.leaveapp.presentation.viewmodel.LeaveViewModel
 import com.vertice.teepop.leaveapp.util.Constant.KEY_ARG_EMPLOYEE
+import com.vertice.teepop.leaveapp.util.NotificationUtil
 import com.vertice.teepop.leaveapp.util.bus.SendMessageEvent
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_leave_form.*
 import kotlinx.android.synthetic.main.view_date_form.view.*
 import org.greenrobot.eventbus.EventBus
@@ -71,13 +72,6 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         setSpinner()
         setDatePicker()
         setTimePicker()
-
-//        fab.setOnClickListener {
-//            sendLeave()
-//            editReason.setText("")
-//
-//            Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
-//        }
     }
 
     override fun onStart() {
@@ -114,7 +108,6 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
                         android.R.layout.simple_spinner_dropdown_item,
                         typeList?.map { typeLeave -> typeLeave.typeName }
                 )
-
                 Log.i(TAG, "TypeLeave is $typeList")
             }
         })
@@ -141,38 +134,19 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
 
     private fun setTimePicker() {
         buttonTimeLate.setOnClickListener {
-            Calendar.getInstance().also {
-                val hour = it.get(Calendar.HOUR_OF_DAY)
-                val minute = it.get(Calendar.MINUTE)
-
-                val dialog = TimePickerDialog(context, this, hour - 9, minute, true)
-                dialog.show()
+            Calendar.getInstance().let {
+                TimePickerDialog(context, this, it.get(Calendar.HOUR_OF_DAY) - 9, it.get(Calendar.MINUTE), true).show()
             }
         }
     }
 
     private fun getDatePickerDialog(listener: (DatePicker, Int, Int, Int) -> Unit): DatePickerDialog {
-        Calendar.getInstance().apply {
-            val year = get(Calendar.YEAR)
-            val month = get(Calendar.MONTH)
-            val day = get(Calendar.DAY_OF_MONTH)
-
-            return DatePickerDialog(context, listener, year, month, day)
+        return Calendar.getInstance().run {
+            DatePickerDialog(context, listener, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH))
         }
-
-        return DatePickerDialog(context, listener, 0, 0, 0)
-    }
-
-    @Subscribe
-    fun onClickFloatingButton(massage: SendMessageEvent) {
-        sendLeave()
-        editReason.setText("")
-
-        Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
     }
 
     private fun sendLeave() {
-
         if (typeList?.get(spinnerType.selectedItemPosition)?.typeName.equals("Early leave")) {
             Toast.makeText(context, "Early Morning ${radioMorning.isChecked} \nEarly Afternoon ${radioAfternoon.isChecked}", Toast.LENGTH_SHORT).show()
         }
@@ -187,8 +161,12 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
             reason = editReason.text.toString()
         }
         Log.i(TAG, leave.toString())
-        Log.i(TAG, Gson().toJson(leave))
         viewModel.postLeave(leave)
+
+        Observable.fromCallable { NotificationUtil.pushNotification("admin", "Leave", leave.reason, null) }
+                .subscribeOn(Schedulers.io())
+                .subscribe({ t -> Log.i(TAG, t) },
+                        { t -> Log.i(TAG, "Error ${t.message}") })
     }
 
     private fun setToFromVisibility(vis: Int) {
@@ -219,6 +197,17 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         }
     }
 
+    @Subscribe
+    fun onClickFloatingButton(massage: SendMessageEvent) {
+        sendLeave()
+        editReason.setText("")
+
+        Toast.makeText(context, "Send Your Leave ", Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * listener
+     */
     override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
         val time = "Time Late : $hour Hour $minute Minute"
         textTimeLate.text = time
@@ -228,8 +217,8 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     }
 
     private val onItemSelected: AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        override fun onNothingSelected(parent: AdapterView<*>?) {
 
+        override fun onNothingSelected(parent: AdapterView<*>?) {
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -237,10 +226,12 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
                     && layoutTimeLate.visibility == View.GONE) {
                 setToFromVisibility(View.GONE)
                 setTimeLateEarlyGroupVisibility("Late arrival")
+
             } else if (typeList?.get(spinnerType.selectedItemPosition)?.typeName.equals("Early leave")
                     && radioEarlyGroup.visibility == View.GONE) {
                 setToFromVisibility(View.GONE)
                 setTimeLateEarlyGroupVisibility("Early leave")
+
             } else if (layoutTimeLate.visibility == View.VISIBLE || radioEarlyGroup.visibility == View.VISIBLE) {
                 setToFromVisibility(View.VISIBLE)
                 setTimeLateEarlyGroupVisibility("")

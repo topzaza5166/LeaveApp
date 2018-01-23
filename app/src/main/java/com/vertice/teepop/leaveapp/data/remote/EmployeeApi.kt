@@ -11,5 +11,5 @@ import retrofit2.http.Path
 interface EmployeeApi {
 
     @GET("employee/{id}")
-    fun getEmployeeById(@Path("id") id: Int): Single<Employee>
+    fun getEmployeeById(@Path("id") id: Long): Single<Employee>
 }

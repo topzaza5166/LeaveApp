@@ -15,12 +15,15 @@ interface LeaveDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateLeave(vararg leave: Leave)
 
+    @Delete
+    fun deleteLeave(leave: Leave)
+
     @Query("SELECT * FROM Leave ORDER BY id DESC")
     fun getAllLeave(): LiveData<List<Leave>>
 
     @Transaction
     @Query("SELECT * FROM Leave WHERE userId LIKE :userId ORDER BY id DESC")
-    fun getLeaveByUserId(userId: Int): DataSource.Factory<Int, LeaveAndType>
+    fun getLeaveByUserId(userId: Long): DataSource.Factory<Int, LeaveAndType>
 
     @Transaction
     @Query("SELECT * FROM Leave ORDER BY id DESC")

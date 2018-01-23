@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.google.firebase.messaging.FirebaseMessaging
 import com.orhanobut.hawk.Hawk
 import com.vertice.teepop.leaveapp.LeaveApplication
 import com.vertice.teepop.leaveapp.R
@@ -100,8 +101,13 @@ class LoginActivity : AppCompatActivity() {
                         },
                         { error ->
                             dialog.cancel()
-                            Toast.makeText(this, "Could not login. Please try again later", Toast.LENGTH_SHORT).show()
-                            Log.e(TAG, error.toString())
+                            error.message?.let {
+                                if (it.contains("401"))
+                                    Toast.makeText(this, "Username or Password is incorrect", Toast.LENGTH_SHORT).show()
+                                else
+                                    Toast.makeText(this, "Could not login. Please try again later", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.i(TAG, error.message)
                         }
                 )
     }
@@ -109,6 +115,10 @@ class LoginActivity : AppCompatActivity() {
     private fun responseSuccess(response: Employee) {
         Hawk.put(Constant.USER_KEY, response)
         Toast.makeText(this, " Name: ${response.name} \n Username: ${response.userName} \n Role: ${response.roleId}", Toast.LENGTH_SHORT).show()
+
+        FirebaseMessaging.getInstance().subscribeToTopic("user")
+        if (response.roleId == 1)
+            FirebaseMessaging.getInstance().subscribeToTopic("admin")
 
         startLeaveActivity()
     }

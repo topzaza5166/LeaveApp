@@ -39,7 +39,7 @@ class LeaveViewModel : ViewModel() {
         return leaveAndType!!
     }
 
-    fun getLeaveByUserId(id: Int): LiveData<PagedList<LeaveAndType>> {
+    fun getLeaveByUserId(id: Long): LiveData<PagedList<LeaveAndType>> {
         leaveAndType = leaveAndType ?: LivePagedListBuilder<Int, LeaveAndType>(leaveRepo.getLeaveByUserId(id), 20).build()
         return leaveAndType!!
     }
@@ -52,8 +52,16 @@ class LeaveViewModel : ViewModel() {
         leaveRepo.postApprove(approve)
     }
 
+    fun reloadLeave(id: Long) {
+        leaveAndType = LivePagedListBuilder<Int, LeaveAndType>(leaveRepo.getLeaveByUserId(id), 20).build()
+    }
+
     fun reloadLeave() {
         leaveAndType = LivePagedListBuilder<Int, LeaveAndType>(leaveRepo.getAllLeaveAndType(), 20).build()
+    }
+
+    fun deleteLeave(id: Long) {
+        leaveRepo.deleteLeave(id)
     }
 
 }

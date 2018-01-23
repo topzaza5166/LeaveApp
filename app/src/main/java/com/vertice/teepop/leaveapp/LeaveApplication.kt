@@ -17,7 +17,7 @@ class LeaveApplication : Application() {
         lateinit var component: AppComponent
     }
 
-    private val BASE_URL = "http://10.10.10.237:6789/"
+    private val BASE_URL = "http://192.168.1.75:6789/"
 
     override fun onCreate() {
         super.onCreate()

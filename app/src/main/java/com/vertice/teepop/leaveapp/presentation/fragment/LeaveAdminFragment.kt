@@ -34,7 +34,7 @@ class LeaveAdminFragment : Fragment() {
     val TAG: String = this::class.java.simpleName
 
     var leaveAdapter = LeaveAdapter()
-    var adminId: Int = 0
+    var adminId: Long = 0
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(LeaveViewModel::class.java).also {
@@ -63,7 +63,7 @@ class LeaveAdminFragment : Fragment() {
     private fun init(savedInstanceState: Bundle?) {
         // Init Fragment level's variable(s) here
         arguments?.run {
-            adminId = getInt(KEY_ARG_USER_ID)
+            adminId = getLong(KEY_ARG_USER_ID)
         }
     }
 
@@ -137,10 +137,6 @@ class LeaveAdminFragment : Fragment() {
 
     private fun getLeave() {
         viewModel.getLeaveAndType().observe(this, Observer {
-
-            if (swipeRefreshLayout.isRefreshing)
-                swipeRefreshLayout.isRefreshing = false
-
             it?.let {
                 leaveAdapter.setList(it)
                 Log.i(TAG, "Leave is Changed $it")
@@ -164,10 +160,10 @@ class LeaveAdminFragment : Fragment() {
 
     companion object {
 
-        fun newInstance(id: Int): LeaveAdminFragment {
+        fun newInstance(id: Long): LeaveAdminFragment {
             return LeaveAdminFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(KEY_ARG_USER_ID, id)
+                    putLong(KEY_ARG_USER_ID, id)
                 }
             }
         }

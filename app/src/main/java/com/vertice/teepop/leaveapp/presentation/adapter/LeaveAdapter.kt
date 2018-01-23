@@ -1,15 +1,20 @@
 package com.vertice.teepop.leaveapp.presentation.adapter
 
 import android.arch.paging.PagedListAdapter
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Parcel
 import android.os.Parcelable
+import android.support.v7.app.AlertDialog
 import android.support.v7.recyclerview.extensions.DiffCallback
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 import com.vertice.teepop.leaveapp.databinding.ListItemLeaveBinding
 import com.vertice.teepop.leaveapp.util.Constant
+import com.vertice.teepop.leaveapp.util.CustomItemTouchHelperCallback
 import kotlin.properties.Delegates
 
 /**
@@ -19,15 +24,13 @@ class LeaveAdapter : PagedListAdapter<LeaveAndType, LeaveAdapter.LeaveHolder>(DI
 
     val TAG: String = this::class.java.simpleName
 
-//    var leaves: List<LeaveAndType> by Delegates
-//            .observable(ArrayList()) { _, _, _ ->
-//                notifyDataSetChanged()
-//            }
-//    var approveChange: MutableMap<Int, String> = HashMap()
-
     var mode: String = Constant.MODE_USER
 
     var onCardViewClickListener: ((LeaveAndType, Int) -> Unit)? = null
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position)?.leave?.id ?: 0
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LeaveAdapter.LeaveHolder {
         val binding = ListItemLeaveBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
@@ -42,6 +45,7 @@ class LeaveAdapter : PagedListAdapter<LeaveAndType, LeaveAdapter.LeaveHolder>(DI
         private val DIFF_CALLBACK = object : DiffCallback<LeaveAndType>() {
             override fun areItemsTheSame(oldItem: LeaveAndType, newItem: LeaveAndType): Boolean =
                     oldItem.leave.id == newItem.leave.id
+
             override fun areContentsTheSame(oldItem: LeaveAndType, newItem: LeaveAndType): Boolean =
                     oldItem == newItem
         }
@@ -69,6 +73,12 @@ class LeaveAdapter : PagedListAdapter<LeaveAndType, LeaveAdapter.LeaveHolder>(DI
 
 }
 
+
+//    var leaves: List<LeaveAndType> by Delegates
+//            .observable(ArrayList()) { _, _, _ ->
+//                notifyDataSetChanged()
+//            }
+//    var approveChange: MutableMap<Int, String> = HashMap()
 
 //                checkApprovedCardView2.setOnClickListener {
 //                    if (it is AppCompatCheckBox) {

@@ -1,4 +1,4 @@
-package com.vertice.teepop.leaveapp.util
+package com.vertice.teepop.leaveapp.presentation
 
 import android.annotation.SuppressLint
 import android.databinding.BindingConversion
