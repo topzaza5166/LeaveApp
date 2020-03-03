@@ -1,16 +1,16 @@
 package com.vertice.teepop.leaveapp.presentation.adapter
 
-import android.arch.paging.PagedListAdapter
+import androidx.paging.PagedListAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.v7.app.AlertDialog
-import android.support.v7.recyclerview.extensions.DiffCallback
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.DiffUtil
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 import com.vertice.teepop.leaveapp.databinding.ListItemLeaveBinding
 import com.vertice.teepop.leaveapp.util.Constant
@@ -32,22 +32,22 @@ class LeaveAdapter : PagedListAdapter<LeaveAndType, LeaveAdapter.LeaveHolder>(DI
         return getItem(position)?.leave?.id ?: 0
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LeaveAdapter.LeaveHolder {
-        val binding = ListItemLeaveBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeaveHolder {
+        val binding = ListItemLeaveBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LeaveHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: LeaveAdapter.LeaveHolder?, position: Int) {
-        holder?.bindData(getItem(position), mode, onCardViewClickListener, position)
+    override fun onBindViewHolder(holder: LeaveHolder, position: Int) {
+        holder.bindData(getItem(position), mode, onCardViewClickListener, position)
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffCallback<LeaveAndType>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<LeaveAndType>() {
             override fun areItemsTheSame(oldItem: LeaveAndType, newItem: LeaveAndType): Boolean =
                     oldItem.leave.id == newItem.leave.id
 
             override fun areContentsTheSame(oldItem: LeaveAndType, newItem: LeaveAndType): Boolean =
-                    oldItem == newItem
+                    oldItem.equals(newItem)
         }
     }
 

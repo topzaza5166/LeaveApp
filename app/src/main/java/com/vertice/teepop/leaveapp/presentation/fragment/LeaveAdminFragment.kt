@@ -1,11 +1,11 @@
 package com.vertice.teepop.leaveapp.presentation.fragment
 
 import android.animation.Animator
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -136,9 +136,9 @@ class LeaveAdminFragment : Fragment() {
     }
 
     private fun getLeave() {
-        viewModel.getLeaveAndType().observe(this, Observer {
+        viewModel.getLeaveAndType().observe(viewLifecycleOwner, Observer {
             it?.let {
-                leaveAdapter.setList(it)
+                leaveAdapter.submitList(it)
                 Log.i(TAG, "Leave is Changed $it")
             }
         })

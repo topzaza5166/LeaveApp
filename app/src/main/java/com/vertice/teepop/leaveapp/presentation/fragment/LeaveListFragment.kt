@@ -1,13 +1,13 @@
 package com.vertice.teepop.leaveapp.presentation.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -99,7 +99,7 @@ class LeaveListFragment : Fragment(), CustomItemTouchHelperCallback.CustomItemTo
 
             it?.let {
                 Log.i(TAG, "$it")
-                leaveAdapter.setList(it)
+                leaveAdapter.submitList(it)
             }
         })
     }

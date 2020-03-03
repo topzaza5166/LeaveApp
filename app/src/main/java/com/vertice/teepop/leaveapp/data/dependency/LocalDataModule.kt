@@ -1,6 +1,6 @@
 package com.vertice.teepop.leaveapp.data.dependency
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.vertice.teepop.leaveapp.data.local.AppDatabase
 import com.vertice.teepop.leaveapp.data.local.LeaveDao

@@ -1,7 +1,7 @@
 package com.vertice.teepop.leaveapp.util
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 
 /**
  * Created by VerDev06 on 1/22/2018.
@@ -14,13 +14,13 @@ class CustomItemTouchHelperCallback(private val listener: CustomItemTouchHelperL
         fun onItemDismiss(position: Int)
     }
 
-    override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
+    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         val dragFlags = 0
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
         return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
     }
 
-    override fun onMove(recyclerView: RecyclerView?, source: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
+    override fun onMove(recyclerView: RecyclerView, source: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         if (source?.itemViewType != target?.itemViewType) {
             return false
         }
@@ -30,7 +30,7 @@ class CustomItemTouchHelperCallback(private val listener: CustomItemTouchHelperL
         return false
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         viewHolder?.let {
             listener.onItemDismiss(viewHolder.adapterPosition)
         }

@@ -8,7 +8,7 @@
     android:padding="8dp"
     tools:context="com.vertice.teepop.leaveapp.presentation.activity.LoginActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,9 +21,9 @@
             android:hint="@string/username"
             android:singleLine="true" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:imeOptions="actionDone"
             android:inputType="textPassword" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btSingIn"

@@ -1,7 +1,7 @@
 package com.vertice.teepop.leaveapp.data
 
-import android.arch.lifecycle.LiveData
-import android.arch.paging.DataSource
+import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.airbnb.lottie.L
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave

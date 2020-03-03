@@ -15,8 +15,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.vertice.teepop.leaveapp.R
 import com.vertice.teepop.leaveapp.presentation.activity.LoginActivity
 import java.io.IOException
@@ -28,12 +28,16 @@ import java.net.URL
  */
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
+    override fun onNewToken(p0: String) {
+        super.onNewToken(p0)
+    }
+
     /**
      * Called when message is received.
      *
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         // TODO(developer): Handle FCM messages here.
         // If the application is in the foreground handle both data and notification messages here.

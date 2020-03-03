@@ -1,6 +1,6 @@
 package com.vertice.teepop.leaveapp.data.entity.converter
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.vertice.teepop.leaveapp.data.model.Approved
 

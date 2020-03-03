@@ -1,6 +1,6 @@
 package com.vertice.teepop.leaveapp.data.entity
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import com.vertice.teepop.leaveapp.data.entity.converter.DateConverter
 import com.vertice.teepop.leaveapp.data.entity.converter.EmployeeConverter

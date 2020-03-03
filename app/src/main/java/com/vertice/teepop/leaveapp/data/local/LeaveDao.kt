@@ -1,8 +1,8 @@
 package com.vertice.teepop.leaveapp.data.local
 
-import android.arch.lifecycle.LiveData
-import android.arch.paging.DataSource
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.room.*
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.model.LeaveAndType
 

@@ -1,7 +1,7 @@
 package com.vertice.teepop.leaveapp.presentation
 
 import android.annotation.SuppressLint
-import android.databinding.BindingConversion
+import androidx.databinding.BindingConversion
 import java.text.SimpleDateFormat
 import java.util.*
 

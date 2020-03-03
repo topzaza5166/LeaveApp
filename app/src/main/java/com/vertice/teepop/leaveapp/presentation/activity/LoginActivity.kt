@@ -2,7 +2,7 @@ package com.vertice.teepop.leaveapp.presentation.activity
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             editPassword.requestFocus()
         }
 
-        btSingIn.setOnClickListener({
+        btSingIn.setOnClickListener {
             val username = editUsername.text.toString()
             val password = editPassword.text.toString()
 
@@ -55,9 +55,9 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 val dialog = ProgressDialog.show(this, "", "Please Wait", true)
                 val disposable = postLogin(username, password, dialog)
-                disposables.add(disposable)
+                disposables.add(disposable!!)
             }
-        })
+        }
 
 
 //        editPassword.setOnEditorActionListener { textView: TextView, actionId: Int, keyEvent: KeyEvent? ->

@@ -1,9 +1,9 @@
 package com.vertice.teepop.leaveapp.presentation.fragment
 
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.AppCompatCheckBox
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatCheckBox
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -68,8 +68,8 @@ class LeaveDialogFragment : DialogFragment() {
     private fun init(savedInstanceState: Bundle?) {
         // Init Fragment level's variable(s) here
         arguments?.apply {
-            mLeave = getParcelable(ARG_KEY_LEAVE)
-            mMode = getString(ARG_KEY_MODE)
+            mLeave = getParcelable(ARG_KEY_LEAVE) ?: LeaveAndType()
+            mMode = getString(ARG_KEY_MODE, "")
         }
     }
 

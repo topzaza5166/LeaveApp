@@ -1,7 +1,7 @@
 package com.vertice.teepop.leaveapp.util
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.MotionEvent
 import android.text.method.Touch.onTouchEvent
 import android.view.GestureDetector
@@ -45,23 +45,22 @@ class RecyclerItemClickListener(var context: Context, val recyclerView: Recycler
             override fun onLongPress(e: MotionEvent?) {
                 e?.run {
                     val child = recyclerView.findChildViewUnder(x, y)
-                    listener.onLongItemClick(child, recyclerView.getChildAdapterPosition(child))
+                    listener.onLongItemClick(child, recyclerView.getChildAdapterPosition(child!!))
                 }
             }
 
         })
     }
 
-    override fun onInterceptTouchEvent(rv: RecyclerView?, e: MotionEvent?): Boolean {
-        e?.run {
-            val child = rv?.findChildViewUnder(x, y)
-            listener.onItemClick(child, rv?.getChildAdapterPosition(child))
+    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+        e.run {
+            val child = rv.findChildViewUnder(x, y)
+            listener.onItemClick(child, rv.getChildAdapterPosition(child!!))
             return true
         }
-        return false
     }
 
-    override fun onTouchEvent(rv: RecyclerView?, e: MotionEvent?) {
+    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
     }
 
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {

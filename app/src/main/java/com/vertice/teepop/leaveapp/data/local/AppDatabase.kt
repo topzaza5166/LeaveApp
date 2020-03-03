@@ -1,7 +1,7 @@
 package com.vertice.teepop.leaveapp.data.local
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.vertice.teepop.leaveapp.data.entity.Leave
 import com.vertice.teepop.leaveapp.data.entity.TypeLeave
 

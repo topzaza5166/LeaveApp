@@ -1,6 +1,6 @@
 package com.vertice.teepop.leaveapp.data.model
 
-import android.arch.persistence.room.ColumnInfo
+import androidx.room.ColumnInfo
 import com.google.gson.annotations.SerializedName
 import java.util.*
 

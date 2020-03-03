@@ -1,9 +1,9 @@
 package com.vertice.teepop.leaveapp.presentation.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import android.util.Log
 import com.vertice.teepop.leaveapp.data.LeaveRepository
 import com.vertice.teepop.leaveapp.data.entity.Leave

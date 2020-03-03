@@ -2,10 +2,10 @@ package com.vertice.teepop.leaveapp.presentation.fragment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -104,9 +104,9 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         viewModel.getAllType().observe(this, Observer {
             it?.let {
                 typeList = it
-                spinnerType.adapter = ArrayAdapter<String>(context,
+                spinnerType.adapter = ArrayAdapter<String>(context!!,
                         android.R.layout.simple_spinner_dropdown_item,
-                        typeList?.map { typeLeave -> typeLeave.typeName }
+                        typeList?.map { typeLeave -> typeLeave.typeName }!!.toMutableList()
                 )
                 Log.i(TAG, "TypeLeave is $typeList")
             }
@@ -142,7 +142,7 @@ class LeaveFormFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
 
     private fun getDatePickerDialog(listener: (DatePicker, Int, Int, Int) -> Unit): DatePickerDialog {
         return Calendar.getInstance().run {
-            DatePickerDialog(context, listener, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH))
+            DatePickerDialog(context!!, listener, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH))
         }
     }
 
